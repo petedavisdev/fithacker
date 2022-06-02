@@ -1,71 +1,71 @@
 <template>
-	<app-header />
+    <app-header />
 
-	<main>
-		<form v-if="!userSession && !submitted" @submit.prevent="login">
-			<h1>Login</h1>
-			<p>Backup your veg and use Veghacker on multiple devices 😎</p>
-			<p>
-				<label>
-					Email
-					<input v-model="email" type="email" required />
-				</label>
-			</p>
+    <main>
+        <form v-if="!userSession && !submitted" @submit.prevent="login">
+            <h1>Login</h1>
+            <p>Backup your veg and use Fithacker on multiple devices 😎</p>
+            <p>
+                <label>
+                    Email
+                    <input v-model="email" type="email" required />
+                </label>
+            </p>
 
-			<p>
-				<label>
-					<input type="checkbox" required />
-					As an alpha veghacker, I am happy to be asked for feedback
-					and I can tolerate the odd bug!
-				</label>
-			</p>
+            <p>
+                <label>
+                    <input type="checkbox" required />
+                    As an alpha fithacker, I am happy to be asked for feedback
+                    and I can tolerate the odd bug!
+                </label>
+            </p>
 
-			<button type="submit">Send me a magic login link ✨</button>
-		</form>
+            <button type="submit">Send me a magic login link ✨</button>
+        </form>
 
-		<article v-else-if="submitted && !userSession">
-			<p>Magic login link sent to {{ email }}</p>
-			<p>Check your inbox and spam folder 😉</p>
-			<button type="button" @click="submitted = false">
-				&lt; Try again
-			</button>
-		</article>
+        <article v-else-if="submitted && !userSession">
+            <p>Magic login link sent to {{ email }}</p>
+            <p>Check your inbox and spam folder 😉</p>
+            <button type="button" @click="submitted = false">
+                &lt; Try again
+            </button>
+        </article>
 
-		<template v-else>
-			<Suspense>
-				<template #default>
-					<article>
-						<p>
-							You are logged in as
-							<strong>{{ userSession.user.email }}</strong>
-						</p>
-						<p>
-							Thank you for trying out
-							<router-link to="log">Veghacker alpha</router-link>!
-						</p>
-						<p>
-							If you would like to encourage me to take the app to
-							the next level, you can
-							<a href="https://www.buymeacoffee.com/petedavis">
-								buy me a coffee
-							</a>
-							😉
-						</p>
+        <template v-else>
+            <Suspense>
+                <template #default>
+                    <article>
+                        <p>
+                            You are logged in as
+                            <strong>{{ userSession.user.email }}</strong>
+                        </p>
+                        <p>
+                            Thank you for trying out
+                            <router-link to="log">Fithacker alpha</router-link>!
+                        </p>
+                        <p>
+                            If you would like to encourage me to take the app to
+                            the next level, you can
+                            <a href="https://www.buymeacoffee.com/petedavis">
+                                buy me a coffee
+                            </a>
+                            😉
+                        </p>
 
-						<p>Cheers!</p>
+                        <p>Cheers!</p>
 
-						<p><i>Pete</i> 😃</p>
-					</article>
-				</template>
+                        <p><i>Pete</i> 😃</p>
+                    </article>
+                </template>
 
-				<template #fallback>
-					<article>Loading...</article>
-				</template>
-			</Suspense>
-		</template>
-	</main>
+                <template #fallback>
+                    <article>Loading...</article>
+                </template>
+            </Suspense>
+        </template>
+    </main>
 
-	<app-footer></app-footer>
+    <app-footer></app-footer>
 </template>
 
 <script lang="ts">

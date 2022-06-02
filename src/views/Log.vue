@@ -86,7 +86,7 @@
                     <th v-if="lastWeekLog.length">
                         <h4>Want to see more than 2 weeks?</h4>
                         <p class="total">
-                            Support the development of Veghacker -
+                            Support the development of Fithacker -
                             <template v-if="!userSession"
                                 ><router-link to="/account">Log in</router-link>
                                 and

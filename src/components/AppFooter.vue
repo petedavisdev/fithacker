@@ -1,11 +1,11 @@
 <template>
-	<footer>
-		Veghacker &copy;
+    <footer>
+        Fithacker &copy;
 
-		{{ new Date().getFullYear() }}
+        {{ new Date().getFullYear() }}
 
-		<a href="https://www.buymeacoffee.com/veghacker">Pete Davis</a>
-	</footer>
+        <a href="https://www.buymeacoffee.com/petedavis">Pete Davis</a>
+    </footer>
 </template>
 
 <style scoped>

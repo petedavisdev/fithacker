@@ -2,7 +2,7 @@
     <header>
         <router-link to="log">
             <strong>➔</strong>
-            <span>VEG</span><span>HAC</span><span>KER</span>
+            <span>FIT</span><span>HAC</span><span>KER</span>
             0.3-alpha
         </router-link>
 

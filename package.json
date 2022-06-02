@@ -1,5 +1,5 @@
 {
-    "name": "veghacker",
+    "name": "fithacker",
     "scripts": {
         "start": "netlify dev",
         "dev": "vite",

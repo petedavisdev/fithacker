@@ -1,5 +1,0 @@
-# Redirects from what the browser requests to what we serve
-/home                               /
-/blog                               /guide
-/about                              /guide/welcome
-/blog/how-to-eat-more-vegetables    /guide/how-to-eat-more-vegetables
