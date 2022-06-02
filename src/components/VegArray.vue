@@ -1,55 +1,55 @@
 <template>
-    <div>
-        <code
-            v-for="(meta, code, index) in vegObj"
-            :key="index"
-            :style="{ color: `var(--${code})` }"
-            class="code"
-            >{{ code }}</code
-        >
+	<div>
+		<code
+			v-for="(meta, code, index) in exerciseObj"
+			:key="index"
+			:style="{ color: `var(--${code})` }"
+			class="code"
+			>{{ code }}</code
+		>
 
-        <span v-if="vegArray.length" class="count">
-            // {{ vegArray.length }}</span
-        >
+		<span v-if="exerciseArray.length" class="count">
+			// {{ exerciseArray.length }}</span
+		>
 
-        <span class="search-input-target"></span>
-    </div>
+		<span class="search-input-target"></span>
+	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import vegetables from "../vegetables.json";
+import exercises from "../exercises.json";
 
 export default defineComponent({
-    props: {
-        vegArray: Array,
-        default: [],
-    },
-    computed: {
-        vegObj() {
-            const vegObject = {};
+	props: {
+		exerciseArray: Array,
+		default: [],
+	},
+	computed: {
+		exerciseObj() {
+			const exerciseObject = {};
 
-            this.vegArray.forEach((code) => {
-                if (code in vegetables) vegObject[code] = vegetables[code];
-            });
+			this.exerciseArray.forEach((code) => {
+				if (code in exercises) exerciseObject[code] = exercises[code];
+			});
 
-            return vegObject;
-        },
-    },
+			return exerciseObject;
+		},
+	},
 });
 </script>
 
 <style scoped>
 .count {
-    float: right;
-    color: royalblue;
-    margin-right: 1ch;
-    font-weight: normal;
+	float: right;
+	color: royalblue;
+	margin-right: 1ch;
+	font-weight: normal;
 }
 
 div {
-    color: silver;
-    margin-bottom: 1ch;
-    text-align: left;
+	color: silver;
+	margin-bottom: 1ch;
+	text-align: left;
 }
 </style>
