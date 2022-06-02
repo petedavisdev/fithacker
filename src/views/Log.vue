@@ -69,11 +69,8 @@
 
                 <tr>
                     <th colspan="7" scope="colgroup" class="week">
-                        <h2>This week</h2>
-                        <ExerciseArray
-                            :exerciseArray="thisWeekTotal"
-                            class="total"
-                        />
+                        <h2>This week: {{ thisWeekTotal.length }}</h2>
+                        {{ thisWeekTotal }}
                     </th>
                     <th
                         v-if="lastWeekLog.length"
@@ -81,11 +78,8 @@
                         scope="colgroup"
                         class="week"
                     >
-                        <h2>Last week</h2>
-                        <ExerciseArray
-                            :exerciseArray="lastWeekTotal"
-                            class="total"
-                        />
+                        <h2>Last week: {{ lastWeekTotal.length }}</h2>
+                        {{ lastWeekTotal }}
                     </th>
                     <th v-if="lastWeekLog.length">
                         <h4>Want to see more than 2 weeks?</h4>
