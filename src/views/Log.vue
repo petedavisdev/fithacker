@@ -195,7 +195,7 @@ th {
 
 .code {
     display: block;
-    margin-block: 0.5em;
+    margin-top: 0.5em;
 }
 
 .container {
