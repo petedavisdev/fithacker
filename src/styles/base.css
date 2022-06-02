@@ -1,0 +1,48 @@
+* {
+	box-sizing: border-box;
+	accent-color: deepskyblue;
+}
+
+body {
+	background-color: #012;
+	color: silver;
+	font-family: "Ubuntu Mono", monospace;
+}
+
+#app {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	min-height: 100vh;
+}
+
+h1 {
+	font-size: 1.5em;
+}
+
+input {
+	color: #124;
+	border: 0;
+	border-radius: 0;
+}
+
+a {
+	color: deepskyblue;
+	text-decoration: none;
+}
+
+code {
+	font-family: "Ubuntu Mono", monospace;
+	font-weight: bold;
+	display: inline-block;
+	margin-inline: 0.25ch;
+}
+
+.router-link-exact-active {
+	color: limegreen;
+}
+
+.fl-r {
+	float: right;
+	margin-left: 1em;
+}
