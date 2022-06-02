@@ -6,18 +6,10 @@
 		</h1>
 
 		<ExerciseArray :exerciseArray="dayLog.sort()" class="total" />
-
-		<input
-			type="search"
-			:value="keyword"
-			placeholder="⌕"
-			@input="keyword = $event.target.value"
-			ref="searchinput"
-		/>
 	</header>
 
 	<main>
-		<label v-for="(meta, code) in filteredExercise" :key="code">
+		<label v-for="(meta, code) in exercises" :key="code">
 			<input
 				v-model="dayLog"
 				type="checkbox"
@@ -107,57 +99,15 @@ export default defineComponent({
 			localStorage.setItem("exerciseLog", JSON.stringify(log.value));
 
 			updateProfile(log.value);
-
-			// focus back on search input after each update
-			if (keyword.value) {
-				keyword.value = "";
-				searchinput.value.focus();
-			}
 		}
-
-		// TODO: sort exercise by code alphabetically
-		const filteredExercise = computed(() => {
-			const sortedExercise = {};
-
-			// Sort alhpabetically by key
-			Object.keys(exercises)
-				.sort()
-				.forEach((key) => {
-					sortedExercise[key] = exercises[key];
-				});
-
-			if (!keyword.value) return sortedExercise;
-
-			const term = keyword.value.toUpperCase();
-			const exerciseEntries = Object.entries(sortedExercise);
-
-			const strongEntries = exerciseEntries.filter(([key, value]) => {
-				return value.family.toUpperCase().startsWith(term);
-			});
-
-			const goodEntries = exerciseEntries.filter(([key, value]) => {
-				return value.family.toUpperCase().includes(term);
-			});
-
-			const codeMatches = exerciseEntries.filter(([key, value]) => {
-				return key.includes(term);
-			});
-
-			return {
-				...Object.fromEntries(strongEntries),
-				...Object.fromEntries(goodEntries),
-				...Object.fromEntries(codeMatches),
-			};
-		});
 
 		return {
 			dayLog,
 			dayName,
-			filteredExercise,
+			exercises,
 			isHome,
 			keyword,
 			updateDayLog,
-			searchinput,
 			log,
 		};
 	},
