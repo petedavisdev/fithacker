@@ -1,32 +1,20 @@
 {
 	"AMO": {
-		"codeUS": "",
-		"family": "Walking ‖ Hiking ‖ Moderate Aerobic",
-		"familyUS": ""
+		"family": "Walking ‖ Hiking ‖ Moderate Aerobic"
 	},
 	"AVI": {
-		"codeUS": "",
-		"family": "Cardio ‖ HIIT ‖ Vigerous aerobic",
-		"familyUS": ""
+		"family": "Cardio ‖ HIIT ‖ Vigerous aerobic"
 	},
 	"FLE": {
-		"codeUS": "",
-		"family": "Flexibility and balance ‖ Stretching ‖ Yoga",
-		"familyUS": ""
+		"family": "Flexibility and balance ‖ Stretching ‖ Yoga"
 	},
 	"SAR": {
-		"codeUS": "",
-		"family": "Arms ‖ Pushups ‖ Pullups",
-		"familyUS": ""
+		"family": "Arms ‖ Pushups ‖ Pullups"
 	},
 	"SCO": {
-		"codeUS": "",
-		"family": "Core ‖ Deadbugs ‖ Planks",
-		"familyUS": ""
+		"family": "Core ‖ Deadbugs ‖ Planks"
 	},
 	"SLE": {
-		"codeUS": "",
-		"family": "Legs ‖ Squats ‖ Lunges",
-		"familyUS": ""
+		"family": "Legs ‖ Squats ‖ Lunges"
 	}
 }

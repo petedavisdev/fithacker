@@ -40,7 +40,7 @@ export async function createProfile() {
 	}
 }
 
-export async function fetchexerciseLog() {
+export async function fetchExerciseLog() {
 	if (!userSession.value) return null
 
 	try {
