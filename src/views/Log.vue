@@ -70,7 +70,7 @@
                 <tr>
                     <th colspan="7" scope="colgroup" class="week">
                         <h2>This week: {{ thisWeekTotal.length }}</h2>
-                        {{ thisWeekTotal.join('') }}
+                        {{ thisWeekTotal.sort().join('') }}
                     </th>
                     <th
                         v-if="lastWeekLog.length"
@@ -79,7 +79,7 @@
                         class="week"
                     >
                         <h2>Last week: {{ lastWeekTotal.length }}</h2>
-                        {{ lastWeekTotal.join('') }}
+                        {{ lastWeekTotal.sort().join('') }}
                     </th>
                     <th v-if="lastWeekLog.length">
                         <h4>Want to see more than 2 weeks?</h4>
