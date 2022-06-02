@@ -11,12 +11,6 @@
                             :class="day.future && 'future'"
                         >
                             <span
-                                v-if="day.data.length && !day.future"
-                                class="count"
-                            >
-                                {{ day.data.length }}
-                            </span>
-                            <span
                                 v-if="!day.data.length && !day.future"
                                 class="count"
                                 >+</span
@@ -32,9 +26,11 @@
 
                     <td v-for="(day, index) in lastWeekLog" :key="index">
                         <router-link :to="'/' + day.date">
-                            <span class="count">
-                                {{ day.data.length }}
-                            </span>
+                            <span
+                                v-if="!day.data.length && !day.future"
+                                class="count"
+                                >+</span
+                            >
                             <code
                                 v-for="(exercise, index) in [...day.data]"
                                 :key="index"
