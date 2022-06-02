@@ -22,10 +22,9 @@
                                 >+</span
                             >
                             <code
-                                v-for="(exercise, index) in day.data"
+                                v-for="(exercise, index) in [...day.data]"
                                 :key="index"
                                 class="code"
-                                :style="{ color: `var(--${exercise})` }"
                                 >{{ exercise }}</code
                             >
                         </router-link>
@@ -37,10 +36,9 @@
                                 {{ day.data.length }}
                             </span>
                             <code
-                                v-for="(exercise, index) in day.data.sort()"
+                                v-for="(exercise, index) in [...day.data]"
                                 :key="index"
                                 class="code"
-                                :style="{ color: `var(--${exercise})` }"
                                 >{{ exercise }}</code
                             >
                         </router-link>
