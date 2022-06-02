@@ -1,20 +1,20 @@
 {
-	"AMO": {
-		"family": "Walking ‖ Hiking ‖ Moderate Aerobic"
+	"🚶": {
+		"family": "Moderate aerobic: Walking, Hiking…"
 	},
-	"AVI": {
-		"family": "Cardio ‖ HIIT ‖ Vigerous aerobic"
+	"🏃‍♀️": {
+		"family": "Vigerous aerobic: HIIT, Cardio, Running…"
 	},
-	"FLE": {
-		"family": "Flexibility and balance ‖ Stretching ‖ Yoga"
+	"🤸‍♀️": {
+		"family": "Flexibility and balance: Stretching, Yoga…"
 	},
-	"SAR": {
-		"family": "Arms ‖ Pushups ‖ Pullups"
+	"💪": {
+		"family": "Arm strengthening: Pushups, Pullups…"
 	},
-	"SCO": {
-		"family": "Core ‖ Deadbugs ‖ Planks"
+	"🌴": {
+		"family": "Core strengthening: Deadbugs, Planks…"
 	},
-	"SLE": {
-		"family": "Legs ‖ Squats ‖ Lunges"
+	"🦵": {
+		"family": "Leg strengthening: Squats, Lunges…"
 	}
 }
