@@ -1,17 +1,17 @@
 <template>
-	<header>
-		<router-link to="log">
-			<strong>➔</strong>
-			<span>FIT</span><span>HAC</span><span>KER</span>
-			0.1-alpha
-		</router-link>
+    <header>
+        <router-link to="log">
+            <strong>➔</strong>
+            <span>FIT</span><span>HAC</span><span>KER</span>
+            0.1-alpha
+        </router-link>
 
-		<router-link to="account" class="fl-r">{{
-			userSession ? "😃" : "👋"
-		}}</router-link>
+        <router-link to="account" class="fl-r">{{
+            userSession ? "😃" : "👋"
+        }}</router-link>
 
-		<a href="https://github.com/petedavisdev/fithacker/" class="fl-r">📖</a>
-	</header>
+        <a href="https://github.com/petedavisdev/fithacker/" class="fl-r">📖</a>
+    </header>
 </template>
 
 <script lang="ts">
@@ -19,46 +19,46 @@ import { defineComponent } from "vue";
 import { userSession } from "../supabase";
 
 export default defineComponent({
-	setup() {
-		return {
-			userSession,
-		};
-	},
+    setup() {
+        return {
+            userSession,
+        };
+    },
 });
 </script>
 
 <style scoped>
 header {
-	position: sticky;
-	top: 0;
-	left: 0;
-	right: 0;
-	background-color: #124;
-	padding: 1rem;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #124;
+    padding: 1rem;
 }
 
 span {
-	color: PowderBlue;
-	font-weight: bold;
+    color: #7fdbca;
+    font-weight: bold;
 }
 span:first-of-type {
-	color: yellow;
+    color: #ffeb95;
 }
 span:last-of-type {
-	color: Violet;
+    color: #82aaff;
 }
 
 .fl-r {
-	transform: scale(1.5);
+    transform: scale(1.5);
 }
 
 strong {
-	display: inline-block;
-	transform: rotate(180deg) scale(2);
-	margin-right: 2ch;
+    display: inline-block;
+    transform: rotate(180deg) scale(2);
+    margin-right: 2ch;
 }
 
 .router-link-exact-active strong {
-	display: none;
+    display: none;
 }
 </style>
