@@ -34,7 +34,6 @@ import { useRoute } from "vue-router";
 import { formatDate, shortenDate } from "../helpers";
 import exercises from "../exercises.json";
 import AppFooter from "../components/AppFooter.vue";
-import ExerciseArray from "../components/ExerciseArray.vue";
 import { fetchExerciseLog, updateProfile, userSession } from "../supabase";
 
 interface Exercise {
@@ -44,12 +43,11 @@ interface Exercise {
 export default defineComponent({
 	components: {
 		AppFooter,
-		ExerciseArray,
 	},
 	setup() {
 		const route = useRoute();
 
-		const isHome = route.path === "/" || "/#/";
+		const isHome = route.path === "/";
 
 		const routeDay = !isHome && route.params.date?.toString();
 
