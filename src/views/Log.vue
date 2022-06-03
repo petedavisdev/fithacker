@@ -11,21 +11,14 @@
                             :class="day.future && 'future'"
                         >
                             <span
-                                v-if="day.data.length && !day.future"
-                                class="count"
-                            >
-                                {{ day.data.length }}
-                            </span>
-                            <span
                                 v-if="!day.data.length && !day.future"
                                 class="count"
                                 >+</span
                             >
                             <code
-                                v-for="(exercise, index) in day.data"
+                                v-for="(exercise, index) in [...day.data]"
                                 :key="index"
                                 class="code"
-                                :style="{ color: `var(--${exercise})` }"
                                 >{{ exercise }}</code
                             >
                         </router-link>
@@ -33,14 +26,15 @@
 
                     <td v-for="(day, index) in lastWeekLog" :key="index">
                         <router-link :to="'/' + day.date">
-                            <span class="count">
-                                {{ day.data.length }}
-                            </span>
+                            <span
+                                v-if="!day.data.length && !day.future"
+                                class="count"
+                                >+</span
+                            >
                             <code
-                                v-for="(exercise, index) in day.data.sort()"
+                                v-for="(exercise, index) in [...day.data]"
                                 :key="index"
                                 class="code"
-                                :style="{ color: `var(--${exercise})` }"
                                 >{{ exercise }}</code
                             >
                         </router-link>
@@ -71,11 +65,8 @@
 
                 <tr>
                     <th colspan="7" scope="colgroup" class="week">
-                        <h2>This week</h2>
-                        <ExerciseArray
-                            :exerciseArray="thisWeekTotal"
-                            class="total"
-                        />
+                        <h2>This week: {{ thisWeekTotal.length }}</h2>
+                        {{ thisWeekTotal.sort().join('') }}
                     </th>
                     <th
                         v-if="lastWeekLog.length"
@@ -83,11 +74,8 @@
                         scope="colgroup"
                         class="week"
                     >
-                        <h2>Last week</h2>
-                        <ExerciseArray
-                            :exerciseArray="lastWeekTotal"
-                            class="total"
-                        />
+                        <h2>Last week: {{ lastWeekTotal.length }}</h2>
+                        {{ lastWeekTotal.sort().join('') }}
                     </th>
                     <th v-if="lastWeekLog.length">
                         <h4>Want to see more than 2 weeks?</h4>

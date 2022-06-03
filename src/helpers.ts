@@ -44,7 +44,5 @@ export function createWeek(currentDate: Date, log: {}) {
     return { name, date, future, data }
   })
 
-  const weekTotal = [...new Set(weekData.sort())]
-
-  return [weekLog, weekTotal]
+  return [weekLog, weekData]
 }
