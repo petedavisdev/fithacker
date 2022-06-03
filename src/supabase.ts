@@ -19,13 +19,13 @@ export async function createProfile() {
 
 	// if (profiles[0]) return
 
-	const localexerciseLog = localStorage.getItem("exerciseLog")
+	const localExerciseLog = localStorage.getItem("exerciseLog")
 
 	try {
 		const { data, error } = await supabase.from("profiles").insert([
 			{
 				user_id: userSession.value.user.id,
-				exercise_log: JSON.parse(localexerciseLog),
+				exercise_log: JSON.parse(localExerciseLog),
 			},
 		])
 
