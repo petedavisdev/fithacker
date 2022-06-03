@@ -16,11 +16,8 @@
 			/>
 
 			<span>
-				<code :style="{ color: `var(--${code})` }">
-					{{ code }}
-				</code>
-				=
-				{{ meta.family }}
+				<code>{{ code }}</code
+				>= {{ meta.family }}
 			</span>
 		</label>
 	</main>
@@ -145,18 +142,25 @@ main {
 	height: 2rem;
 	width: 1.5rem;
 	position: absolute;
+	top: 0.5rem;
+	left: 0.5ch;
 }
 
 label {
+	position: relative;
 	display: block;
 	white-space: nowrap;
 	overflow-x: hidden;
 	text-overflow: ellipsis;
-	margin: 0.5ch;
 }
 
 label * {
 	padding: 1ch 0.5ch 1ch 1rem;
+}
+
+code {
+	font-size: x-large;
+	vertical-align: middle;
 }
 
 :checked ~ * {
