@@ -185,7 +185,7 @@ th {
 
 .code {
 	display: block;
-	font-size: x-large;
+	font-size: large;
 	margin-top: 0.25em;
 }
 
