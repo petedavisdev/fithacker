@@ -7,7 +7,7 @@
 				<tr>
 					<td v-for="(day, index) in thisWeekLog" :key="index">
 						<router-link
-							:to="'/' + day.date"
+							:to="{ name: 'Day', params: { date: day.date } }"
 							:class="day.future && 'future'"
 						>
 							<span
@@ -25,7 +25,7 @@
 					</td>
 
 					<td v-for="(day, index) in lastWeekLog" :key="index">
-						<router-link :to="'/' + day.date">
+						<router-link :to="{ name: 'Day', params: { date: day.date } }">
 							<span
 								v-if="!day.data.length && !day.future"
 								class="count"
@@ -46,7 +46,7 @@
 				<tr>
 					<td v-for="(day, index) in thisWeekLog" :key="index">
 						<router-link
-							:to="'/' + day.date"
+							:to="{ name: 'Day', params: { date: day.date } }"
 							:class="day.future && 'future'"
 							class="date"
 						>
@@ -55,7 +55,7 @@
 					</td>
 
 					<td v-for="(day, index) in lastWeekLog" :key="index">
-						<router-link :to="'/' + day.date" class="date">
+						<router-link :to="{ name: 'Day', params: { date: day.date } }" class="date">
 							{{ day.name }}
 						</router-link>
 					</td>
@@ -86,7 +86,7 @@
 						<p class="message">
 							Support the development of Fithacker -
 							<template v-if="!userSession"
-								><router-link to="/account">Log in</router-link>
+								><router-link :to="{ name: 'Account' }">Log in</router-link>
 								and
 							</template>
 							<a href="https://www.buymeacoffee.com/petedavis">
@@ -168,7 +168,7 @@ td {
 
 th {
 	vertical-align: top;
-	border-top: 2px solid #124;
+	border-top: 2px solid royalblue;
 }
 
 .count {

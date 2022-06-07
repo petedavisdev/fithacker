@@ -1,12 +1,12 @@
 <template>
     <header>
-        <router-link to="log">
+        <router-link :to="{ name: 'Log' }">
             <strong>➔</strong>
             <span>FIT</span><span>HAC</span><span>KER</span>
             0.1-alpha
         </router-link>
 
-        <router-link to="account" class="fl-r">{{
+        <router-link :to="{ name: 'Account' }" class="fl-r">{{
             userSession ? "😃" : "👋"
         }}</router-link>
 

@@ -1,7 +1,7 @@
 <template>
 	<header>
 		<h1 :class="{ home: isHome }">
-			<router-link to="/log" class="fl-r icon">➔</router-link>
+			<router-link :to="{name: 'Log'}" class="fl-r icon">➔</router-link>
 			{{ isHome ? "What exercise have you done today?" : dayName }}
 		</h1>
 	</header>

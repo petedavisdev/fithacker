@@ -1,28 +1,32 @@
-import { createRouter, createWebHashHistory } from "vue-router";
-import Account from "./views/Account.vue";
-import Day from "./views/Day.vue";
-import Log from "./views/Log.vue";
+import { createRouter, createWebHistory } from "vue-router"
+import Account from "./pages/Account.vue"
+import Day from "./pages/Day.vue"
+import Log from "./pages/Log.vue"
 
 const routes = [
 	{
 		path: "/",
+		name: "Home",
 		component: Day,
 	},
 	{
 		path: "/account",
+		name: "Account",
 		component: Account,
 	},
 	{
 		path: "/log",
+		name: "Log",
 		component: Log,
 	},
 	{
 		path: "/:date",
+		name: "Day",
 		component: Day,
 	},
-];
+]
 
 export const router = createRouter({
-	history: createWebHashHistory(),
+	history: createWebHistory(),
 	routes,
-});
+})

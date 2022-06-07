@@ -4,7 +4,7 @@
 	<main>
 		<form v-if="!userSession && !submitted" @submit.prevent="login">
 			<h1>Login</h1>
-			<p>Backup your exercise and use Fithacker on multiple devices 😎</p>
+			<p>Backup your exercise log and use Fithacker on multiple devices 😎</p>
 			<p>
 				<label>
 					Email
@@ -24,7 +24,7 @@
 		</form>
 
 		<article v-else-if="submitted && !userSession">
-			<p>Magic login link sent to {{ email }}</p>
+			<h2>Magic login link sent to {{ email }}</h2>
 			<p>Check your inbox and spam folder 😉</p>
 			<button type="button" @click="submitted = false">
 				&lt; Try again
@@ -41,7 +41,7 @@
 						</p>
 						<p>
 							Thank you for trying out
-							<router-link to="log">Fithacker alpha</router-link>!
+							<router-link :to="{ name: 'Log' }">Fithacker alpha</router-link>!
 						</p>
 						<p>
 							If you would like to encourage me to take the app to
@@ -124,7 +124,7 @@ main {
 	padding: 0.5em;
 }
 
-button {
+[type="submit"] {
 	display: block;
 	width: 100%;
 	color: deepskyblue;
@@ -132,6 +132,13 @@ button {
 	border-color: deepskyblue;
 	border-width: 2px;
 	padding: 0.5em;
+}
+
+[type="button"] {
+	display: block;
+	color: deepskyblue;
+	border: none;
+	padding: 0;
 }
 
 article,
