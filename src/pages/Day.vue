@@ -1,7 +1,8 @@
 <template>
+	<app-header />
+
 	<header>
 		<h1 :class="{ home: isHome }">
-			<router-link :to="{name: 'Log'}" class="fl-r icon">➔</router-link>
 			{{ isHome ? "What exercise have you done today?" : dayName }}
 		</h1>
 	</header>
@@ -20,6 +21,8 @@
 				>= {{ meta.family }}
 			</span>
 		</label>
+
+		<router-link :to="{name: 'Log'}" class="button">➔</router-link>
 	</main>
 
 	<app-footer />
@@ -32,6 +35,7 @@ import { formatDate, shortenDate } from "../helpers";
 import exercises from "../exercises.json";
 import AppFooter from "../components/AppFooter.vue";
 import { fetchExerciseLog, updateProfile, userSession } from "../supabase";
+import AppHeader from "../components/AppHeader.vue";
 
 interface Exercise {
 	family: string[];
@@ -39,8 +43,9 @@ interface Exercise {
 
 export default defineComponent({
 	components: {
-		AppFooter,
-	},
+    AppFooter,
+    AppHeader
+},
 	setup() {
 		const route = useRoute();
 
@@ -108,23 +113,18 @@ export default defineComponent({
 </script>
 
 <style scoped>
-header {
-	position: sticky;
-	z-index: 1;
-	top: 0;
-	left: 0;
-	right: 0;
-	background-color: #124;
-}
 
 h1 {
 	padding: 1rem 1rem 0.5rem;
 	margin: 0;
+	text-align: center;
 }
 
 main {
 	padding: 1em;
-	flex-grow: 1;
+	width: max-content;
+	max-width: 100%;
+	place-self: center;
 }
 
 [type="search"] {
@@ -171,8 +171,15 @@ aside {
 	padding: 1em;
 }
 
-.icon {
-	padding-inline: 0.25ch;
-	transform: scale(1.5);
+.button {
+	display: block;
+	width: 100%;
+	color: deepskyblue;
+	background-color: #124;
+	border: 2px solid deepskyblue;
+	padding: 0.5rem;
+	margin-top: 1rem;
+	text-align: center;
+	font-size: xx-large;
 }
 </style>

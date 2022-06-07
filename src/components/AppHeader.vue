@@ -1,7 +1,6 @@
 <template>
     <header>
         <router-link :to="{ name: 'Log' }">
-            <strong>➔</strong>
             <span>FIT</span><span>HAC</span><span>KER</span>
             0.1-alpha
         </router-link>
@@ -50,15 +49,5 @@ span:last-of-type {
 
 .fl-r {
     transform: scale(1.5);
-}
-
-strong {
-    display: inline-block;
-    transform: rotate(180deg) scale(2);
-    margin-right: 2ch;
-}
-
-.router-link-exact-active strong {
-    display: none;
 }
 </style>

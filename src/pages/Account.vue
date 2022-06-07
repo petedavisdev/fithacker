@@ -129,8 +129,7 @@ main {
 	width: 100%;
 	color: deepskyblue;
 	background-color: #124;
-	border-color: deepskyblue;
-	border-width: 2px;
+	border: 2px solid deepskyblue;
 	padding: 0.5em;
 }
 
