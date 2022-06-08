@@ -1,12 +1,20 @@
+:root {
+	--yellow: #ffeb95;
+	--cyan: #7fdbca;
+	--blue: #82aaff;
+	--dark: #092944;
+	--darker: #011627;
+}
+
 * {
 	box-sizing: border-box;
-	accent-color: deepskyblue;
+	accent-color: var(--cyan);
 }
 
 body {
-	background-color: #012;
-	color: silver;
-	font-family: "Ubuntu Mono", monospace;
+	background-color: var(--darker);
+	color: var(--blue);
+	font-family: 'Ubuntu Mono', monospace;
 }
 
 #app {
@@ -18,28 +26,25 @@ body {
 
 h1 {
 	font-size: 1.5em;
+	color: var(--yellow);
 }
 
 input {
-	color: #124;
+	color: var(--dark);
 	border: 0;
 	border-radius: 0;
 }
 
 a {
-	color: deepskyblue;
+	color: var(--cyan);
 	text-decoration: none;
 }
 
 code {
-	font-family: "Ubuntu Mono", monospace;
+	font-family: 'Ubuntu Mono', monospace;
 	font-weight: bold;
 	display: inline-block;
 	margin-inline: 0.25ch;
-}
-
-.router-link-exact-active {
-	color: limegreen;
 }
 
 .fl-r {

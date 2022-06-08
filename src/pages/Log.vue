@@ -10,33 +10,19 @@
 							:to="{ name: 'Day', params: { date: day.date } }"
 							:class="day.future && 'future'"
 						>
-							<span
-								v-if="!day.data.length && !day.future"
-								class="count"
-								>+</span
-							>
-							<code
-								v-for="(exercise, index) in day.data"
-								:key="index"
-								class="code"
-								>{{ exercise }}</code
-							>
+							<span v-if="!day.data.length && !day.future" class="count">+</span>
+							<code v-for="(exercise, index) in day.data" :key="index" class="code">{{
+								exercise
+							}}</code>
 						</router-link>
 					</td>
 
 					<td v-for="(day, index) in lastWeekLog" :key="index">
 						<router-link :to="{ name: 'Day', params: { date: day.date } }">
-							<span
-								v-if="!day.data.length && !day.future"
-								class="count"
-								>+</span
-							>
-							<code
-								v-for="(exercise, index) in day.data"
-								:key="index"
-								class="code"
-								>{{ exercise }}</code
-							>
+							<span v-if="!day.data.length && !day.future" class="count">+</span>
+							<code v-for="(exercise, index) in day.data" :key="index" class="code">{{
+								exercise
+							}}</code>
 						</router-link>
 					</td>
 
@@ -67,18 +53,13 @@
 					<th colspan="7" scope="colgroup" class="week">
 						<h2>This week</h2>
 						<p class="total">{{ thisWeekTotal.length }}</p>
-						{{ thisWeekTotal.sort().join("") }}
+						{{ thisWeekTotal.sort().join('') }}
 					</th>
 
-					<th
-						v-if="lastWeekLog.length"
-						colspan="7"
-						scope="colgroup"
-						class="week"
-					>
+					<th v-if="lastWeekLog.length" colspan="7" scope="colgroup" class="week">
 						<h2>Last week</h2>
 						<p class="total">{{ lastWeekTotal.length }}</p>
-						{{ lastWeekTotal.sort().join("") }}
+						{{ lastWeekTotal.sort().join('') }}
 					</th>
 
 					<th v-if="lastWeekLog.length">
@@ -89,9 +70,7 @@
 								><router-link :to="{ name: 'Account' }">Log in</router-link>
 								and
 							</template>
-							<a href="https://www.buymeacoffee.com/petedavis">
-								buy me a coffee
-							</a>
+							<a href="https://www.buymeacoffee.com/petedavis"> buy me a coffee </a>
 							😉
 						</p>
 					</th>
@@ -104,11 +83,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { formatDate, createWeek } from "../helpers";
-import AppFooter from "../components/AppFooter.vue";
-import AppHeader from "../components/AppHeader.vue";
-import { userSession } from "../supabase";
+import { defineComponent } from 'vue';
+import { formatDate, createWeek } from '../helpers';
+import AppFooter from '../components/AppFooter.vue';
+import AppHeader from '../components/AppHeader.vue';
+import { userSession } from '../supabase';
 
 export default defineComponent({
 	components: {
@@ -116,7 +95,7 @@ export default defineComponent({
 		AppHeader,
 	},
 	setup() {
-		const log = JSON.parse(localStorage.getItem("exerciseLog")) || {};
+		const log = JSON.parse(localStorage.getItem('exerciseLog')) || {};
 		const today = new Date();
 		const [thisWeekLog, thisWeekTotal] = createWeek(today, log);
 
@@ -168,18 +147,18 @@ td {
 
 th {
 	vertical-align: top;
-	border-top: 2px solid royalblue;
+	border-top: 2px solid var(--blue);
 }
 
 .count {
 	display: block;
 	padding-top: 2ch;
-	color: royalblue;
+	color: var(--blue);
 }
 
 .future,
 .future * {
-	color: #124;
+	color: var(--dark);
 	pointer-events: none;
 }
 
@@ -199,6 +178,8 @@ p {
 
 .total {
 	font-size: xx-large;
+	font-weight: bold;
+	color: var(--yellow);
 	margin-top: 0;
 }
 

@@ -15,8 +15,8 @@
 			<p>
 				<label>
 					<input type="checkbox" required />
-					As an alpha fithacker, I am happy to be asked for feedback
-					and I can tolerate the odd bug!
+					As an alpha fithacker, I am happy to be asked for feedback and I can tolerate
+					the odd bug!
 				</label>
 			</p>
 
@@ -26,9 +26,7 @@
 		<article v-else-if="submitted && !userSession">
 			<h2>Magic login link sent to {{ email }}</h2>
 			<p>Check your inbox and spam folder 😉</p>
-			<button type="button" @click="submitted = false">
-				&lt; Try again
-			</button>
+			<button type="button" @click="submitted = false">&lt; Try again</button>
 		</article>
 
 		<template v-else>
@@ -44,11 +42,9 @@
 							<router-link :to="{ name: 'Log' }">Fithacker alpha</router-link>!
 						</p>
 						<p>
-							If you would like to encourage me to take the app to
-							the next level, you can
-							<a href="https://www.buymeacoffee.com/petedavis">
-								buy me a coffee
-							</a>
+							If you would like to encourage me to take the app to the next level, you
+							can
+							<a href="https://www.buymeacoffee.com/petedavis"> buy me a coffee </a>
 							😉
 						</p>
 
@@ -69,10 +65,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { createProfile, supabase, userSession } from "../supabase";
-import AppHeader from "../components/AppHeader.vue";
-import AppFooter from "../components/AppFooter.vue";
+import { defineComponent, ref } from 'vue';
+import { createProfile, supabase, userSession } from '../supabase';
+import AppHeader from '../components/AppHeader.vue';
+import AppFooter from '../components/AppFooter.vue';
 
 export default defineComponent({
 	components: {
@@ -80,7 +76,7 @@ export default defineComponent({
 		AppFooter,
 	},
 	setup() {
-		const email = ref("");
+		const email = ref('');
 		const submitted = ref(false);
 
 		async function login() {
@@ -89,11 +85,11 @@ export default defineComponent({
 					email: email.value,
 				});
 
-				if (error) return alert("Error logging in: " + error.message);
+				if (error) return alert('Error logging in: ' + error.message);
 
 				submitted.value = true;
 			} catch (error) {
-				console.error("Error thrown:", error.message);
+				console.error('Error thrown:', error.message);
 				return alert(error.error_description || error);
 			}
 		}
@@ -117,25 +113,25 @@ main {
 	padding: 1rem;
 }
 
-[type="email"] {
+[type='email'] {
 	display: block;
 	width: 100%;
 	border-width: 2px;
 	padding: 0.5em;
 }
 
-[type="submit"] {
+[type='submit'] {
 	display: block;
 	width: 100%;
-	color: deepskyblue;
-	background-color: #124;
-	border: 2px solid deepskyblue;
+	color: var(--cyan);
+	background-color: var(--dark);
+	border: 2px solid var(--cyan);
 	padding: 0.5em;
 }
 
-[type="button"] {
+[type='button'] {
 	display: block;
-	color: deepskyblue;
+	color: var(--cyan);
 	border: none;
 	padding: 0;
 }
