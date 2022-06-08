@@ -4,7 +4,7 @@
 	"scripts": {
 		"start": "netlify dev",
 		"dev": "vite",
-		"build": "vue-tsc --noEmit && vite build",
+		"build": "vite build",
 		"preview": "vite preview"
 	},
 	"dependencies": {
