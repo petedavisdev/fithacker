@@ -27,7 +27,7 @@
 			<h2>Magic login link sent to {{ email }}</h2>
 			<p>Check your inbox and spam folder 😉</p>
 			<button type="button" @click="submitted = false">
-				&lt; Try again
+				← Try again
 			</button>
 		</article>
 
@@ -136,6 +136,7 @@ main {
 [type="button"] {
 	display: block;
 	color: deepskyblue;
+	background: none;
 	border: none;
 	padding: 0;
 }
