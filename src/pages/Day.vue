@@ -3,18 +3,13 @@
 
 	<header>
 		<h1 :class="{ home: isHome }">
-			{{ isHome ? "What exercise have you done today?" : dayName }}
+			{{ isHome ? 'What exercise have you done today?' : dayName }}
 		</h1>
 	</header>
 
 	<main>
 		<label v-for="(meta, code) in exercises" :key="code">
-			<input
-				v-model="dayLog"
-				type="checkbox"
-				:value="code"
-				@change="updateDayLog"
-			/>
+			<input v-model="dayLog" type="checkbox" :value="code" @change="updateDayLog" />
 
 			<span>
 				<code>{{ code }}</code
@@ -22,20 +17,20 @@
 			</span>
 		</label>
 
-		<router-link :to="{name: 'Log'}" class="button">➔</router-link>
+		<router-link :to="{ name: 'Log' }" class="button">➜</router-link>
 	</main>
 
 	<app-footer />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
-import { useRoute } from "vue-router";
-import { formatDate, shortenDate } from "../helpers";
-import exercises from "../exercises.json";
-import AppFooter from "../components/AppFooter.vue";
-import { fetchExerciseLog, updateProfile, userSession } from "../supabase";
-import AppHeader from "../components/AppHeader.vue";
+import { computed, defineComponent, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { formatDate, shortenDate } from '../helpers';
+import exercises from '../exercises.json';
+import AppFooter from '../components/AppFooter.vue';
+import { fetchExerciseLog, updateProfile, userSession } from '../supabase';
+import AppHeader from '../components/AppHeader.vue';
 
 interface Exercise {
 	family: string[];
@@ -43,13 +38,13 @@ interface Exercise {
 
 export default defineComponent({
 	components: {
-    AppFooter,
-    AppHeader
-},
+		AppFooter,
+		AppHeader,
+	},
 	setup() {
 		const route = useRoute();
 
-		const isHome = route.path === "/";
+		const isHome = route.path === '/';
 
 		const routeDay = !isHome && route.params.date?.toString();
 
@@ -66,19 +61,18 @@ export default defineComponent({
 		async function getLog() {
 			log.value = await fetchExerciseLog();
 
-			const localLog =
-				JSON.parse(localStorage.getItem("exerciseLog")) || {};
+			const localLog = JSON.parse(localStorage.getItem('exerciseLog')) || {};
 
 			if (log.value && localLog) {
 				localStorage.setItem(
-					"exerciseLog",
+					'exerciseLog',
 					JSON.stringify({
 						...log.value,
 						...localLog,
 					})
 				);
 			} else if (log.value) {
-				localStorage.setItem("exerciseLog", JSON.stringify(log.value));
+				localStorage.setItem('exerciseLog', JSON.stringify(log.value));
 			} else if (localLog) {
 				log.value = localLog;
 			}
@@ -88,13 +82,13 @@ export default defineComponent({
 
 		getLog();
 
-		const keyword = ref("");
+		const keyword = ref('');
 
 		const searchinput = ref(null);
 
 		function updateDayLog() {
 			log.value[dayKey] = dayLog.value;
-			localStorage.setItem("exerciseLog", JSON.stringify(log.value));
+			localStorage.setItem('exerciseLog', JSON.stringify(log.value));
 
 			updateProfile(log.value);
 		}
@@ -113,7 +107,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 h1 {
 	padding: 1rem 1rem 0.5rem;
 	margin: 0;
@@ -127,18 +120,18 @@ main {
 	place-self: center;
 }
 
-[type="search"] {
+[type='search'] {
 	padding: 1rem;
 	background-color: gainsboro;
 	width: 100%;
 	border-radius: 0;
 }
 
-[type="search"]::placeholder {
+[type='search']::placeholder {
 	font-size: x-large;
 }
 
-[type="checkbox"] {
+[type='checkbox'] {
 	height: 2rem;
 	width: 1.5rem;
 	position: absolute;
@@ -164,7 +157,7 @@ code {
 }
 
 :checked ~ * {
-	background-color: #346;
+	background-color: var(--dark);
 }
 
 aside {
@@ -174,9 +167,9 @@ aside {
 .button {
 	display: block;
 	width: 100%;
-	color: deepskyblue;
-	background-color: #124;
-	border: 2px solid deepskyblue;
+	color: var(--cyan);
+	background-color: var(--dark);
+	border: 2px solid var(--cyan);
 	padding: 0.5rem;
 	margin-top: 1rem;
 	text-align: center;
