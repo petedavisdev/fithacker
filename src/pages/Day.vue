@@ -1,6 +1,4 @@
 <template>
-	<app-header />
-
 	<header>
 		<h1 :class="{ home: isHome }">
 			{{ isHome ? 'What exercise have you done today?' : dayName }}
@@ -19,28 +17,20 @@
 
 		<router-link :to="{ name: 'Log' }" class="button">➜</router-link>
 	</main>
-
-	<app-footer />
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { formatDate, shortenDate } from '../helpers';
-import exercises from '../exercises.json';
-import AppFooter from '../components/AppFooter.vue';
 import { getLog, updateProfile } from '../supabase';
-import AppHeader from '../components/AppHeader.vue';
+import exercises from '../exercises.json';
 
 interface Exercise {
 	family: string[];
 }
 
 export default defineComponent({
-	components: {
-		AppFooter,
-		AppHeader,
-	},
 	setup() {
 		const route = useRoute();
 

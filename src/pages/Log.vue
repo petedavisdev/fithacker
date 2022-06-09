@@ -1,6 +1,4 @@
 <template>
-	<app-header />
-
 	<main>
 		<div class="container">
 			<table>
@@ -78,22 +76,14 @@
 			</table>
 		</div>
 	</main>
-
-	<app-footer />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { formatDate, createWeek } from '../helpers';
-import AppFooter from '../components/AppFooter.vue';
-import AppHeader from '../components/AppHeader.vue';
 import { userSession } from '../supabase';
 
 export default defineComponent({
-	components: {
-		AppFooter,
-		AppHeader,
-	},
 	setup() {
 		const log = JSON.parse(localStorage.getItem('exerciseLog')) || {};
 		const today = new Date();

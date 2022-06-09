@@ -1,6 +1,4 @@
 <template>
-	<app-header />
-
 	<main>
 		<form v-if="!userSession && !submitted" @submit.prevent="login">
 			<h1>Login</h1>
@@ -60,21 +58,13 @@
 			</Suspense>
 		</template>
 	</main>
-
-	<app-footer></app-footer>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { createProfile, getLog, supabase, userSession } from '../supabase';
-import AppHeader from '../components/AppHeader.vue';
-import AppFooter from '../components/AppFooter.vue';
 
 export default defineComponent({
-	components: {
-		AppHeader,
-		AppFooter,
-	},
 	setup() {
 		const email = ref('');
 		const submitted = ref(false);
