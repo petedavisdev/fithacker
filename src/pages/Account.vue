@@ -51,6 +51,8 @@
 						<p>Cheers!</p>
 
 						<p><i>Pete</i> 😃</p>
+
+						<router-link :to="{ name: 'Log' }" class="button">➜</router-link>
 					</article>
 				</template>
 
@@ -95,8 +97,13 @@ export default defineComponent({
 			}
 		}
 
-		createProfile();
-		getLog();
+
+		supabase.auth.onAuthStateChange((event, session) => {
+			if (event == 'SIGNED_IN') {
+				createProfile();
+				getLog();
+			}
+		})
 
 		return {
 			email,
@@ -142,5 +149,17 @@ main {
 article,
 form {
 	max-width: 60ch;
+}
+
+.button {
+	display: block;
+	width: 100%;
+	color: var(--cyan);
+	background-color: var(--dark);
+	border: 2px solid var(--cyan);
+	padding: 0.5rem;
+	margin-top: 1rem;
+	text-align: center;
+	font-size: xx-large;
 }
 </style>
