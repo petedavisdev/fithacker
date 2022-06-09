@@ -87,7 +87,7 @@ import { defineComponent } from 'vue';
 import { formatDate, createWeek } from '../helpers';
 import AppFooter from '../components/AppFooter.vue';
 import AppHeader from '../components/AppHeader.vue';
-import { userSession } from '../supabase';
+import { getLog, userSession } from '../supabase';
 
 export default defineComponent({
 	components: {
@@ -95,6 +95,7 @@ export default defineComponent({
 		AppHeader,
 	},
 	setup() {
+		getLog();
 		const log = JSON.parse(localStorage.getItem('exerciseLog')) || {};
 		const today = new Date();
 		const [thisWeekLog, thisWeekTotal] = createWeek(today, log);

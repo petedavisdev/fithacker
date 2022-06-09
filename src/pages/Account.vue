@@ -66,7 +66,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { createProfile, supabase, userSession } from '../supabase';
+import { createProfile, getLog, supabase, userSession } from '../supabase';
 import AppHeader from '../components/AppHeader.vue';
 import AppFooter from '../components/AppFooter.vue';
 
@@ -96,6 +96,7 @@ export default defineComponent({
 		}
 
 		createProfile();
+		getLog();
 
 		return {
 			email,
