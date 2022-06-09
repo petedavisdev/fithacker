@@ -8,8 +8,6 @@
 		<router-link :to="{ name: 'Account' }" class="fl-r">{{
 			userSession ? '😃' : '👋'
 		}}</router-link>
-
-		<a href="https://github.com/petedavisdev/fithacker/" class="fl-r">📖</a>
 	</header>
 </template>
 

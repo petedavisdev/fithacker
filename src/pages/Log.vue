@@ -133,7 +133,7 @@ main {
 
 table {
 	text-align: center;
-	border-spacing: 2ch;
+	border-spacing: 1.5ch;
 }
 
 th,
@@ -164,7 +164,7 @@ th {
 
 .code {
 	display: block;
-	font-size: large;
+	font-size: x-large;
 	margin-top: 0.25em;
 }
 

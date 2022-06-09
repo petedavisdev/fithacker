@@ -33,13 +33,11 @@
 			<Suspense>
 				<template #default>
 					<article>
+						<h2>
+							You are logged in as {{ userSession.user.email }}
+						</h2>
 						<p>
-							You are logged in as
-							<strong>{{ userSession.user.email }}</strong>
-						</p>
-						<p>
-							Thank you for trying out
-							<router-link :to="{ name: 'Log' }">Fithacker alpha</router-link>!
+							Thank you for trying out Fithacker alpha!
 						</p>
 						<p>
 							If you would like to encourage me to take the app to the next level, you
