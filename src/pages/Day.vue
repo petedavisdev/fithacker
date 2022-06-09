@@ -24,12 +24,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { formatDate, shortenDate } from '../helpers';
 import exercises from '../exercises.json';
 import AppFooter from '../components/AppFooter.vue';
-import { fetchExerciseLog, updateProfile, userSession } from '../supabase';
+import { getLog, updateProfile } from '../supabase';
 import AppHeader from '../components/AppHeader.vue';
 
 interface Exercise {
@@ -58,39 +58,15 @@ export default defineComponent({
 
 		const dayLog = ref([]);
 
-		async function getLog() {
-			log.value = await fetchExerciseLog();
-
-			const localLog = JSON.parse(localStorage.getItem('exerciseLog')) || {};
-
-			if (log.value && localLog) {
-				localStorage.setItem(
-					'exerciseLog',
-					JSON.stringify({
-						...log.value,
-						...localLog,
-					})
-				);
-			} else if (log.value) {
-				localStorage.setItem('exerciseLog', JSON.stringify(log.value));
-			} else if (localLog) {
-				log.value = localLog;
-			}
-
-			dayLog.value = log.value[dayKey] || [];
-		}
-
-		getLog();
-
-		const keyword = ref('');
-
-		const searchinput = ref(null);
+		onMounted(async () => {
+			log.value = await getLog();
+			dayLog.value = (await log.value[dayKey]) || [];
+		});
 
 		function updateDayLog() {
 			log.value[dayKey] = dayLog.value;
-			localStorage.setItem('exerciseLog', JSON.stringify(log.value));
-
 			updateProfile(log.value);
+			localStorage.setItem('exerciseLog', JSON.stringify(log.value));
 		}
 
 		return {
@@ -98,7 +74,6 @@ export default defineComponent({
 			dayName,
 			exercises,
 			isHome,
-			keyword,
 			updateDayLog,
 			log,
 		};

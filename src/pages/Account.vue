@@ -26,9 +26,7 @@
 		<article v-else-if="submitted && !userSession">
 			<h2>Magic login link sent to {{ email }}</h2>
 			<p>Check your inbox and spam folder 😉</p>
-			<button type="button" @click="submitted = false">
-				← Try again
-			</button>
+			<button type="button" @click="submitted = false">← Try again</button>
 		</article>
 
 		<template v-else>
@@ -83,9 +81,10 @@ export default defineComponent({
 
 		async function login() {
 			try {
-				const { error } = await supabase.auth.signIn({
-					email: email.value,
-				});
+				const { error } = await supabase.auth.signIn(
+					{ email: email.value },
+					{ redirectTo: 'https://fithacker.netlify.app/account' }
+				);
 
 				if (error) return alert('Error logging in: ' + error.message);
 
