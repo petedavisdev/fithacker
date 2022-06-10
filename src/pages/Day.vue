@@ -1,11 +1,9 @@
 <template>
-	<header>
+	<main>
 		<h1 :class="{ home: isHome }">
 			{{ isHome ? 'What exercise have you done today?' : dayName }}
 		</h1>
-	</header>
 
-	<main>
 		<label v-for="(meta, code) in exercises" :key="code">
 			<input v-model="dayLog" type="checkbox" :value="code" @change="updateDayLog" />
 
@@ -15,7 +13,7 @@
 			</span>
 		</label>
 
-		<router-link :to="{ name: 'Log' }" class="button">➜</router-link>
+		<router-link :to="{ name: 'Log' }" class="button">➙</router-link>
 	</main>
 </template>
 
@@ -79,7 +77,7 @@ h1 {
 }
 
 main {
-	padding: 1em;
+	padding-inline: 1em;
 	width: max-content;
 	max-width: 100%;
 	place-self: center;

@@ -1,0 +1,86 @@
+:root {
+	--yellow: #ffeb95;
+	--cyan: #7fdbca;
+	--blue: #82aaff;
+	--dark: #092944;
+	--darker: #011627;
+}
+
+* {
+	box-sizing: border-box;
+	accent-color: var(--cyan);
+}
+
+body {
+	background-color: var(--darker);
+	color: var(--blue);
+	font-family: "Ubuntu Mono", monospace;
+}
+
+#app {
+	background-color: var(--darker);
+}
+
+main {
+	display: grid;
+	height: 100%;
+	place-content: center;
+	padding-top: 4em;
+	padding-bottom: 1em;
+}
+
+h1 {
+	font-size: 1.5em;
+	color: var(--yellow);
+}
+
+input {
+	color: var(--dark);
+	border: 0;
+	border-radius: 0;
+}
+
+a {
+	color: var(--cyan);
+	text-decoration: none;
+}
+
+code {
+	font-family: "Ubuntu Mono", monospace;
+	font-weight: bold;
+	display: inline-block;
+	margin-inline: 0.25ch;
+}
+
+.fl-r {
+	float: right;
+	margin-left: 1em;
+}
+
+@media (min-height: 800px) and (orientation: landscape) {
+	.app-wrapper {
+		display: grid;
+		min-height: 100vh;
+		width: 100%;
+		place-content: center;
+	}
+
+	.backdrop {
+		position: fixed;
+		width: 100%;
+		height: 100vh;
+		background-image: url("/bg-photo.webp");
+		background-size: cover;
+		filter: blur(5px);
+		opacity: 0.5;
+	}
+
+	#app {
+		position: relative;
+		width: 375px;
+		min-height: 750px;
+		border: solid black 1em;
+		border-block-width: 3em;
+		border-radius: 1.5em;
+	}
+}

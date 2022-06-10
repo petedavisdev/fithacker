@@ -48,7 +48,7 @@
 
 						<p><i>Pete</i> 😃</p>
 
-						<router-link :to="{ name: 'Log' }" class="button">➜</router-link>
+						<router-link :to="{ name: 'Log' }" class="button">➙</router-link>
 					</article>
 				</template>
 
@@ -105,9 +105,7 @@ export default defineComponent({
 
 <style scoped>
 main {
-	display: grid;
-	place-content: center;
-	padding: 1rem;
+	padding-inline: 1em;
 }
 
 [type='email'] {
@@ -132,11 +130,6 @@ main {
 	background: none;
 	border: none;
 	padding: 0;
-}
-
-article,
-form {
-	max-width: 60ch;
 }
 
 .button {

@@ -26,7 +26,7 @@ export default defineComponent({
 
 <style scoped>
 header {
-	position: sticky;
+	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -42,7 +42,7 @@ span:first-of-type {
 	color: var(--yellow);
 }
 span:last-of-type {
-	color: #82aaff;
+	color: var(--blue);
 }
 
 .fl-r {

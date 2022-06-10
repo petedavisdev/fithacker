@@ -123,7 +123,7 @@ main {
 
 table {
 	text-align: center;
-	border-spacing: 1.5ch;
+	border-spacing: 1.2ch;
 }
 
 th,
