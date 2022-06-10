@@ -8,8 +8,7 @@
 			<input v-model="dayLog" type="checkbox" :value="code" @change="updateDayLog" />
 
 			<span>
-				<code>{{ code }}</code
-				>= {{ meta.family }}
+				<code>{{ code }}</code>{{ meta.family }}
 			</span>
 		</label>
 
@@ -72,14 +71,13 @@ export default defineComponent({
 <style scoped>
 h1 {
 	padding: 1rem 1rem 0.5rem;
-	margin: 0;
 	text-align: center;
 }
 
 main {
 	padding-inline: 1em;
-	width: max-content;
-	max-width: 100%;
+	width: 100%;
+	max-width: max-content;
 	place-self: center;
 }
 
