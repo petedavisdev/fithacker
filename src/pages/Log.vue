@@ -2,65 +2,50 @@
 	<main>
 		<div class="container">
 			<table>
-				<tr>
-					<td v-for="(day, index) in thisWeekLog" :key="index">
-						<router-link
-							:to="{ name: 'Day', params: { date: day.date } }"
-							:class="day.future && 'future'"
-						>
-							<span v-if="!day.data.length && !day.future" class="count">+</span>
-							<code v-for="(exercise, index) in day.data" :key="index" class="code">{{
-								exercise
-							}}</code>
-						</router-link>
-					</td>
+				<tr class="exercise-per-day">
+					<template v-for="(week, index) in weeks" :key="index">
+						<td v-for="(day, index) in week.log" :key="index">
+							<router-link
+								:to="{ name: 'Day', params: { date: day.date } }"
+								:class="day.future && 'future'"
+							>
+								<span v-if="!day.data.length && !day.future" class="count">+</span>
+								<code v-for="(exercise, index) in day.data" :key="index" class="code">{{
+									exercise
+								}}</code>
+							</router-link>
+						</td>
+					</template>
 
-					<td v-for="(day, index) in lastWeekLog" :key="index">
-						<router-link :to="{ name: 'Day', params: { date: day.date } }">
-							<span v-if="!day.data.length && !day.future" class="count">+</span>
-							<code v-for="(exercise, index) in day.data" :key="index" class="code">{{
-								exercise
-							}}</code>
-						</router-link>
-					</td>
-
-					<td v-if="lastWeekLog.length"></td>
+					<td v-if="weeks.length > 1"></td>
 				</tr>
 
-				<tr>
-					<td v-for="(day, index) in thisWeekLog" :key="index">
-						<router-link
-							:to="{ name: 'Day', params: { date: day.date } }"
-							:class="day.future && 'future'"
-							class="date"
-						>
-							{{ day.name }}
-						</router-link>
-					</td>
+				<tr class="day-headings">
+					<template v-for="(week, index) in weeks" :key="index">
+						<td v-for="(day, index) in week.log" :key="index">
+							<router-link
+								:to="{ name: 'Day', params: { date: day.date } }"
+								:class="day.future && 'future'"
+								class="date"
+							>
+								{{ day.name }}
+							</router-link>
+						</td>
+					</template>
 
-					<td v-for="(day, index) in lastWeekLog" :key="index">
-						<router-link :to="{ name: 'Day', params: { date: day.date } }" class="date">
-							{{ day.name }}
-						</router-link>
-					</td>
-
-					<td v-if="lastWeekLog.length"></td>
+					<td v-if="weeks.length > 1"></td>
 				</tr>
 
-				<tr>
-					<th colspan="7" scope="colgroup" class="week">
-						<h2>This week</h2>
-						<p class="total">{{ thisWeekTotal.length }}</p>
-						{{ thisWeekTotal.sort().join('') }}
-					</th>
+				<tr class="week-summaries">
+					<template v-for="(week, index) in weeks" :key="index">
+						<th colspan="7" scope="colgroup" class="week">
+							<h2>{{ week.name }}</h2>
+							<p class="total">{{ week.total.length }}</p>
+							<p class="all">{{ week.total.sort().join(' ') }}</p>
+						</th>
+					</template>
 
-					<th v-if="lastWeekLog.length" colspan="7" scope="colgroup" class="week">
-						<h2>Last week</h2>
-						<p class="total">{{ lastWeekTotal.length }}</p>
-						{{ lastWeekTotal.sort().join('') }}
-					</th>
-
-					<th v-if="lastWeekLog.length">
+					<th v-if="weeks.length > 1">
 						<h4>Want to see more than 2 weeks?</h4>
 						<p class="message">
 							Support the development of Fithacker -
@@ -87,11 +72,14 @@ export default defineComponent({
 	setup() {
 		const log = JSON.parse(localStorage.getItem('exerciseLog')) || {};
 		const today = new Date();
+
+		const thisWeekName = 'This week'
 		const [thisWeekLog, thisWeekTotal] = createWeek(today, log);
 
 		const firstDateInLog = Object.keys(log).sort()[0];
 		const firstDateThisWeek = thisWeekLog[6].date;
 
+		const lastWeekName = 'Last week'
 		let lastWeekLog = {};
 		let lastWeekTotal = [];
 
@@ -102,12 +90,14 @@ export default defineComponent({
 
 		const nameDay = (date) => formatDate(new Date(date));
 
+		const weeks = [
+			{ name: thisWeekName, log: thisWeekLog, total: thisWeekTotal },
+			{ name: lastWeekName, log: lastWeekLog, total: lastWeekTotal }
+		]
+
 		return {
 			nameDay,
-			thisWeekLog,
-			thisWeekTotal,
-			lastWeekLog,
-			lastWeekTotal,
+			weeks,
 			userSession,
 		};
 	},
@@ -133,6 +123,7 @@ td {
 
 td {
 	vertical-align: bottom;
+	min-width: 32px;
 }
 
 th {
@@ -171,6 +162,12 @@ p {
 	font-weight: bold;
 	color: var(--yellow);
 	margin-top: 0;
+}
+
+.all {
+	line-height: 2;
+	font-size: small;
+	padding-inline: 2em;
 }
 
 .message {
