@@ -44,10 +44,50 @@ export function createWeek(currentDate: Date, log: {}) {
 		return { name, date, future, data }
 	})
 
-	const title =
-		dayjs(weekLog[6].date).format("D MMM YYYY") +
-		" - " +
-		dayjs(weekLog[0].date).format("D MMM")
+	const monday = weekLog[6].date
+	const sunday = weekLog[0].date
+
+	const title = formatWeekTitle(monday, sunday)
 
 	return { log: weekLog, total, title }
+}
+
+function formatWeekTitle(monday, sunday) {
+	const isThisYear = dayjs(monday).year() === dayjs().year()
+	const isInOneYear = dayjs(monday).year() === dayjs(sunday).year()
+	const isInOneMonth = dayjs(monday).month() === dayjs(sunday).month()
+
+	if (isThisYear && isInOneYear && isInOneMonth) {
+		return dayjs(monday).format("D") + " - " + dayjs(sunday).format("D MMM")
+	}
+
+	if (isThisYear && isInOneYear) {
+		return (
+			dayjs(monday).format("D MMM") +
+			" - " +
+			dayjs(sunday).format("D MMM")
+		)
+	}
+
+	if (isInOneMonth) {
+		return (
+			dayjs(monday).format("D") +
+			" - " +
+			dayjs(sunday).format("D MMM YYYY")
+		)
+	}
+
+	if (isInOneYear) {
+		return (
+			dayjs(monday).format("D MMM") +
+			" - " +
+			dayjs(sunday).format("D MMM YYYY")
+		)
+	}
+
+	return (
+		dayjs(monday).format("D MMM YYYY") +
+		" - " +
+		dayjs(sunday).format("D MMM")
+	)
 }

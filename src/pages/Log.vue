@@ -17,7 +17,7 @@
 						</td>
 					</template>
 
-					<td v-if="weeks.length > 1"></td>
+					<td v-if="weeks.length > 1 && !hasPlus"></td>
 				</tr>
 
 				<tr class="day-headings">
@@ -33,7 +33,7 @@
 						</td>
 					</template>
 
-					<td v-if="weeks.length > 1"></td>
+					<td v-if="weeks.length > 1 && !hasPlus"></td>
 				</tr>
 
 				<tr class="week-summaries">
@@ -45,7 +45,7 @@
 						</th>
 					</template>
 
-					<th v-if="weeks.length > 1">
+					<th v-if="weeks.length > 1 && !hasPlus">
 						<h4>Want to see more than 2 weeks?</h4>
 						<p class="message">
 							Support the development of Fithacker -
@@ -84,10 +84,16 @@ export default defineComponent({
 		weeks[0].title = 'This week'
 		weeks[1].title = 'Last week'
 
-
 		const nameDay = (date) => formatDate(new Date(date));
 
+		const hasPlus = log.plus;
+
+		console.log(hasPlus)
+
+		if (!hasPlus) weeks = [ weeks[0], weeks[1] ];
+
 		return {
+			hasPlus,
 			nameDay,
 			weeks,
 			userSession,
