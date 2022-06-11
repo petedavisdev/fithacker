@@ -39,7 +39,7 @@
 				<tr class="week-summaries">
 					<template v-for="(week, index) in weeks" :key="index">
 						<th colspan="7" scope="colgroup" class="week">
-							<h2>{{ week.name }}</h2>
+							<h2>{{ week.title }}</h2>
 							<p class="total">{{ week.total.length }}</p>
 							<p class="all">{{ week.total.sort().join(' ') }}</p>
 						</th>
@@ -71,29 +71,21 @@ import { userSession } from '../supabase';
 export default defineComponent({
 	setup() {
 		const log = JSON.parse(localStorage.getItem('exerciseLog')) || {};
-		const today = new Date();
-
-		const thisWeekName = 'This week'
-		const [thisWeekLog, thisWeekTotal] = createWeek(today, log);
-
 		const firstDateInLog = Object.keys(log).sort()[0];
-		const firstDateThisWeek = thisWeekLog[6].date;
+		let date = new Date();
+		let weeks = [];
 
-		const lastWeekName = 'Last week'
-		let lastWeekLog = {};
-		let lastWeekTotal = [];
+		do {
+			const week = createWeek(date, log);
+			weeks.push(week);
+			date = new Date(date.setDate(date.getDate() - 7));
+		} while (firstDateInLog < date.toISOString())
 
-		if (firstDateInLog < firstDateThisWeek) {
-			const weekAgo = new Date(today.setDate(today.getDate() - 7));
-			[lastWeekLog, lastWeekTotal] = createWeek(weekAgo, log);
-		}
+		weeks[0].title = 'This week'
+		weeks[1].title = 'Last week'
+
 
 		const nameDay = (date) => formatDate(new Date(date));
-
-		const weeks = [
-			{ name: thisWeekName, log: thisWeekLog, total: thisWeekTotal },
-			{ name: lastWeekName, log: lastWeekLog, total: lastWeekTotal }
-		]
 
 		return {
 			nameDay,
