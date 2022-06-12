@@ -70,27 +70,28 @@ import { userSession } from '../supabase';
 
 export default defineComponent({
 	setup() {
-		const log = JSON.parse(localStorage.getItem('exerciseLog')) || {};
-		const firstDateInLog = Object.keys(log).sort()[0];
 		let date = new Date();
 		let weeks = [];
+		const localLog = localStorage.getItem('exerciseLog');
+		const log = localLog ? JSON.parse(localLog) : {};
+		const firstDateInLog = new Date(Object.keys(log).sort()[0]);
+		const firstDateToShow = firstDateInLog && new Date(firstDateInLog.setDate(firstDateInLog.getDate() - 7))
 
 		do {
 			const week = createWeek(date, log);
-			weeks.push(week);
+			if (week) weeks.push(week);
 			date = new Date(date.setDate(date.getDate() - 7));
-		} while (firstDateInLog < date.toISOString())
+		console.log(firstDateToShow && firstDateToShow < date)
+		} while (firstDateToShow && firstDateToShow < date)
 
 		weeks[0].title = 'This week'
-		weeks[1].title = 'Last week'
+		if (weeks[1]) weeks[1].title = 'Last week'
 
 		const nameDay = (date) => formatDate(new Date(date));
 
 		const hasPlus = log.plus;
 
-		console.log(hasPlus)
-
-		if (!hasPlus) weeks = [ weeks[0], weeks[1] ];
+		if (!hasPlus) weeks = weeks.slice(0,2);
 
 		return {
 			hasPlus,
@@ -105,8 +106,7 @@ export default defineComponent({
 <style scoped>
 main {
 	direction: rtl;
-	display: grid;
-	place-content: center;
+	padding-inline: 0;
 }
 
 table {

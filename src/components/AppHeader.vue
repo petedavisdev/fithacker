@@ -1,13 +1,13 @@
 <template>
 	<header>
 		<router-link :to="{ name: 'Log' }">
-			<span>FIT</span><span>HAC</span><span>KER</span>
+			<span>FIT</span><span>HAC</span><span>KER</span><span v-if="log.plus">+</span>
 			0.1-alpha
 		</router-link>
 
-		<router-link :to="{ name: 'Account' }" class="fl-r">{{
-			userSession ? '😃' : '👋'
-		}}</router-link>
+		<router-link v-if="userSession && log.plus" :to="{ name: 'Account' }" class="fl-r">😎</router-link>
+		<router-link v-else-if="userSession" :to="{ name: 'Account' }" class="fl-r">😃</router-link>
+		<router-link v-else :to="{ name: 'Login' }" class="fl-r">👋</router-link>
 	</header>
 </template>
 
@@ -17,7 +17,11 @@ import { userSession } from '../supabase';
 
 export default defineComponent({
 	setup() {
+		const localLog = localStorage.getItem('exerciseLog');
+		const log = localLog ? JSON.parse(localLog) : {};
+		
 		return {
+			log,
 			userSession,
 		};
 	},

@@ -52,6 +52,7 @@ export default defineComponent({
 
 		function updateDayLog() {
 			log.value[dayKey] = dayLog.value;
+			if (!dayLog.value.length) delete log.value[dayKey];
 			updateProfile(log.value);
 			localStorage.setItem('exerciseLog', JSON.stringify(log.value));
 		}
@@ -72,13 +73,6 @@ export default defineComponent({
 h1 {
 	padding: 1rem 1rem 0.5rem;
 	text-align: center;
-}
-
-main {
-	padding-inline: 1em;
-	width: 100%;
-	max-width: max-content;
-	place-self: center;
 }
 
 [type='search'] {

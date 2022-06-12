@@ -65,8 +65,9 @@ async function fetchProfile() {
 export async function getLog() {
 	const fetchedProfile = await fetchProfile()
 	const fetchedLog = fetchedProfile.exercise_log
-	const localLog = JSON.parse(localStorage.getItem("exerciseLog")) || {}
-	const mergedLog = { ...fetchedLog, ...localLog, plus: fetchedProfile.plus }
+	const localLog = localStorage.getItem("exerciseLog")
+	const log = localLog ? JSON.parse(localLog) : {}
+	const mergedLog = { ...fetchedLog, ...log, plus: fetchedProfile.plus }
 
 	localStorage.setItem("exerciseLog", JSON.stringify(mergedLog))
 

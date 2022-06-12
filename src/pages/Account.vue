@@ -1,36 +1,9 @@
 <template>
 	<main>
-		<form v-if="!userSession && !submitted" @submit.prevent="login">
-			<h1>Login</h1>
-			<p>Backup your exercise log and use Fithacker on multiple devices 😎</p>
-			<p>
-				<label>
-					Email
-					<input v-model="email" type="email" required />
-				</label>
-			</p>
-
-			<p>
-				<label>
-					<input type="checkbox" required />
-					As an alpha fithacker, I am happy to be asked for feedback and I can tolerate
-					the odd bug!
-				</label>
-			</p>
-
-			<button type="submit">Send me a magic login link ✨</button>
-		</form>
-
-		<article v-else-if="submitted && !userSession">
-			<h2>Magic login link sent to {{ email }}</h2>
-			<p>Check your inbox and spam folder 😉</p>
-			<button type="button" @click="submitted = false">← Try again</button>
-		</article>
-
-		<template v-else>
-			<Suspense>
-				<template #default>
-					<article>
+		<Suspense>
+			<template #default>
+				<div>
+					<article v-if="userSession && !log.plus">
 						<h2>
 							You are logged in as {{ userSession.user.email }}
 						</h2>
@@ -44,94 +17,71 @@
 							😉
 						</p>
 
+						<p>Thank you!</p>
+
+						<p><i>Pete</i> 😃</p>
+
+						<router-link :to="{ name: 'Log' }" class="button">➙</router-link>
+					</article>
+
+					<article v-if="userSession && log.plus">
+						<h2>
+							You are logged in as {{ userSession.user.email }}
+						</h2>
+						<p>
+							Thank you for supporting Fithacker alpha! 
+						</p>
+						<p>
+							You have unlocked you complete log and you will be the first to get new features.
+						</p>
+
 						<p>Cheers!</p>
 
 						<p><i>Pete</i> 😃</p>
 
 						<router-link :to="{ name: 'Log' }" class="button">➙</router-link>
 					</article>
-				</template>
+				</div>
+			</template>
 
-				<template #fallback>
-					<article>Loading...</article>
-				</template>
-			</Suspense>
-		</template>
+			<template #fallback>
+				<article>Loading...</article>
+			</template>
+		</Suspense>
 	</main>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
+import { router } from '../router';
 import { createProfile, getLog, supabase, userSession } from '../supabase';
 
 export default defineComponent({
 	setup() {
-		const email = ref('');
-		const submitted = ref(false);
+		if (!userSession.value) router.push({ name: 'Login' })
 
-		async function login() {
-			try {
-				const { error } = await supabase.auth.signIn(
-					{ email: email.value },
-					{ redirectTo: 'https://fithacker.netlify.app/account' }
-				);
+		const log = ref({plus: false})
 
-				if (error) return alert('Error logging in: ' + error.message);
-
-				submitted.value = true;
-			} catch (error) {
-				console.error('Error thrown:', error.message);
-				return alert(error.error_description || error);
-			}
-		}
-
-
-		supabase.auth.onAuthStateChange((event, session) => {
+		supabase.auth.onAuthStateChange(async (event, session) => {
 			if (event == 'SIGNED_IN') {
 				createProfile();
-				getLog();
+				log.value = await getLog();
 			}
 		})
 
+		onMounted(async () => {
+			log.value = await getLog();
+		});
+
 		return {
-			email,
-			login,
-			submitted,
 			userSession,
+			log
 		};
 	},
 });
 </script>
 
 <style scoped>
-main {
-	padding-inline: 1em;
-}
-
-[type='email'] {
-	display: block;
-	width: 100%;
-	border-width: 2px;
-	padding: 0.5em;
-}
-
-[type='submit'] {
-	display: block;
-	width: 100%;
-	color: var(--cyan);
-	background-color: var(--dark);
-	border: 2px solid var(--cyan);
-	padding: 0.5em;
-}
-
-[type='button'] {
-	display: block;
-	color: var(--cyan);
-	background: none;
-	border: none;
-	padding: 0;
-}
-
 .button {
 	display: block;
 	width: 100%;

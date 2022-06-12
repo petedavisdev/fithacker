@@ -26,8 +26,8 @@ main {
 	display: grid;
 	min-height: 100vh;
 	place-content: center;
-	padding-top: 4em;
-	padding-bottom: 1em;
+	place-self: center;
+	padding: 4em 1em 1em;
 }
 
 h1 {

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router"
 import Account from "./pages/Account.vue"
 import Day from "./pages/Day.vue"
 import Log from "./pages/Log.vue"
+import Login from "./pages/Login.vue"
 
 const routes = [
 	{
@@ -13,6 +14,11 @@ const routes = [
 		path: "/account",
 		name: "Account",
 		component: Account,
+	},
+	{
+		path: "/login",
+		name: "Login",
+		component: Login,
 	},
 	{
 		path: "/log",
