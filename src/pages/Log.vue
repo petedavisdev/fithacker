@@ -67,21 +67,20 @@
 import { defineComponent } from 'vue';
 import { formatDate, createWeek } from '../helpers';
 import { userSession } from '../supabase';
+import useProfile from '../useProfile';
 
 export default defineComponent({
 	setup() {
+		const { profile } = useProfile();
 		let date = new Date();
 		let weeks = [];
-		const localLog = localStorage.getItem('exerciseLog');
-		const log = localLog ? JSON.parse(localLog) : {};
-		const firstDateInLog = new Date(Object.keys(log).sort()[0]);
+		const firstDateInLog = new Date(Object.keys(profile.value).sort()[0]);
 		const firstDateToShow = firstDateInLog && new Date(firstDateInLog.setDate(firstDateInLog.getDate() - 7))
 
 		do {
-			const week = createWeek(date, log);
+			const week = createWeek(date, profile.value);
 			if (week) weeks.push(week);
 			date = new Date(date.setDate(date.getDate() - 7));
-		console.log(firstDateToShow && firstDateToShow < date)
 		} while (firstDateToShow && firstDateToShow < date)
 
 		weeks[0].title = 'This week'
@@ -89,7 +88,7 @@ export default defineComponent({
 
 		const nameDay = (date) => formatDate(new Date(date));
 
-		const hasPlus = log.plus;
+		const hasPlus = profile.value?.plus;
 
 		if (!hasPlus) weeks = weeks.slice(0,2);
 

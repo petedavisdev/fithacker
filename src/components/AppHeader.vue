@@ -1,11 +1,11 @@
 <template>
 	<header>
 		<router-link :to="{ name: 'Log' }">
-			<span>FIT</span><span>HAC</span><span>KER</span><span v-if="log.plus">+</span>
+			<span>FIT</span><span>HAC</span><span>KER</span><span v-if="profile.plus">+</span>
 			0.1-alpha
 		</router-link>
 
-		<router-link v-if="userSession && log.plus" :to="{ name: 'Account' }" class="fl-r">😎</router-link>
+		<router-link v-if="userSession && profile.plus" :to="{ name: 'Account' }" class="fl-r">😎</router-link>
 		<router-link v-else-if="userSession" :to="{ name: 'Account' }" class="fl-r">😃</router-link>
 		<router-link v-else :to="{ name: 'Login' }" class="fl-r">👋</router-link>
 	</header>
@@ -14,14 +14,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { userSession } from '../supabase';
+import useProfile from '../useProfile';
 
 export default defineComponent({
 	setup() {
-		const localLog = localStorage.getItem('exerciseLog');
-		const log = localLog ? JSON.parse(localLog) : {};
+		const { profile } = useProfile();
 		
 		return {
-			log,
+			profile,
 			userSession,
 		};
 	},

@@ -20,15 +20,14 @@
 import { defineComponent, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { formatDate, shortenDate } from '../helpers';
-import { getLog, updateProfile } from '../supabase';
+import { updateProfile } from '../supabase';
 import exercises from '../exercises.json';
-
-interface Exercise {
-	family: string[];
-}
+import useProfile from '../useProfile';
 
 export default defineComponent({
 	setup() {
+		const { profile, getProfile } = useProfile();
+
 		const route = useRoute();
 
 		const isHome = route.path === '/';
@@ -41,20 +40,18 @@ export default defineComponent({
 
 		const dayName = formatDate(day);
 
-		const log = ref({});
-
 		const dayLog = ref([]);
 
 		onMounted(async () => {
-			log.value = await getLog();
-			dayLog.value = (await log.value[dayKey]) || [];
+			getProfile();
+			dayLog.value = (await profile.value[dayKey]) || [];
 		});
 
 		function updateDayLog() {
-			log.value[dayKey] = dayLog.value;
-			if (!dayLog.value.length) delete log.value[dayKey];
-			updateProfile(log.value);
-			localStorage.setItem('exerciseLog', JSON.stringify(log.value));
+			profile.value[dayKey] = dayLog.value;
+			if (!dayLog.value.length) delete profile.value[dayKey];
+			localStorage.setItem('exerciseLog', JSON.stringify(profile.value));
+			updateProfile(profile.value);
 		}
 
 		return {
@@ -63,7 +60,7 @@ export default defineComponent({
 			exercises,
 			isHome,
 			updateDayLog,
-			log,
+			profile,
 		};
 	},
 });

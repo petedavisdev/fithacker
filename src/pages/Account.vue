@@ -3,7 +3,7 @@
 		<Suspense>
 			<template #default>
 				<div>
-					<article v-if="userSession && !log.plus">
+					<article v-if="userSession && !profile.plus">
 						<h2>
 							You are logged in as {{ userSession.user.email }}
 						</h2>
@@ -24,7 +24,7 @@
 						<router-link :to="{ name: 'Log' }" class="button">➙</router-link>
 					</article>
 
-					<article v-if="userSession && log.plus">
+					<article v-if="userSession && profile.plus">
 						<h2>
 							You are logged in as {{ userSession.user.email }}
 						</h2>
@@ -54,28 +54,28 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
 import { router } from '../router';
-import { createProfile, getLog, supabase, userSession } from '../supabase';
+import { createProfile, supabase, userSession } from '../supabase';
+import useProfile from '../useProfile';
 
 export default defineComponent({
 	setup() {
+		const { profile, getProfile } = useProfile();
 		if (!userSession.value) router.push({ name: 'Login' })
-
-		const log = ref({plus: false})
 
 		supabase.auth.onAuthStateChange(async (event, session) => {
 			if (event == 'SIGNED_IN') {
 				createProfile();
-				log.value = await getLog();
+				useProfile
 			}
 		})
 
 		onMounted(async () => {
-			log.value = await getLog();
+			await getProfile();
 		});
 
 		return {
 			userSession,
-			log
+			profile
 		};
 	},
 });

@@ -32,7 +32,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { router } from '../router';
-import { createProfile, getLog, supabase, userSession } from '../supabase';
+import { supabase, userSession } from '../supabase';
 
 export default defineComponent({
 	setup() {
