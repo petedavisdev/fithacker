@@ -11,14 +11,6 @@ export const userSession = ref<Session | null>(null)
 export async function createProfile() {
 	if (!userSession.value) return null
 
-	// Check if profile exists
-	// const { data: profiles, error } = await supabase
-	//   .from("profiles")
-	//   .select("exercise_log")
-	//   .eq("user_id", userSession.value.user.id)
-
-	// if (profiles[0]) return
-
 	const localExerciseLog = localStorage.getItem("exerciseLog")
 
 	try {
@@ -29,10 +21,7 @@ export async function createProfile() {
 			},
 		])
 
-		if (error) {
-			console.warn("error", error)
-			return
-		}
+		if (error) throw error
 	} catch (err) {
 		alert("Error")
 		console.error("Unknown problem inserting to db", err)
@@ -40,7 +29,7 @@ export async function createProfile() {
 	}
 }
 
-async function fetchProfile() {
+export async function fetchProfile() {
 	try {
 		if (!userSession.value) throw "not logged in"
 
@@ -60,18 +49,6 @@ async function fetchProfile() {
 		console.error("Error fetching data:", err)
 		return {}
 	}
-}
-
-export async function getLog() {
-	const fetchedProfile = await fetchProfile()
-	const fetchedLog = fetchedProfile.exercise_log
-	const localLog = localStorage.getItem("exerciseLog")
-	const log = localLog ? JSON.parse(localLog) : {}
-	const mergedLog = { ...fetchedLog, ...log, plus: fetchedProfile.plus }
-
-	localStorage.setItem("exerciseLog", JSON.stringify(mergedLog))
-
-	return mergedLog
 }
 
 export async function updateProfile(log) {
