@@ -1,18 +1,22 @@
-import { ref } from "vue"
+import { reactive } from "vue"
 import { fetchProfile } from "./supabase"
 
-export default function useProfile() {
-	const profile = ref({ plus: false })
+export function useProfile() {
+	const profile = reactive({
+		log: {},
+		plus: false,
+	})
 
 	async function getProfile() {
 		const { exercise_log, plus } = await fetchProfile()
-		const localLog = localStorage.getItem("exerciseLog")
-		const log = localLog ? JSON.parse(localLog) : {}
-		const mergedProfile = { ...exercise_log, ...log, plus }
+		console.log({ exercise_log, plus })
 
-		localStorage.setItem("exerciseLog", JSON.stringify(mergedProfile))
+		const localLog = JSON.parse(localStorage.getItem("exerciseLog")) || {}
 
-		profile.value = mergedProfile
+		profile.log = { ...exercise_log, ...localLog }
+		profile.plus = plus
+
+		localStorage.setItem("exerciseLog", JSON.stringify(profile.log))
 	}
 
 	return { profile, getProfile }

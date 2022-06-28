@@ -22,11 +22,11 @@ import { useRoute } from 'vue-router';
 import { formatDate, shortenDate } from '../helpers';
 import { updateProfile } from '../supabase';
 import exercises from '../exercises.json';
-import useProfile from '../useProfile';
+import { useProfile } from '../useProfile';
 
 export default defineComponent({
 	setup() {
-		const { profile, getProfile } = useProfile();
+		const { profile } = useProfile();
 
 		const route = useRoute();
 
@@ -42,16 +42,13 @@ export default defineComponent({
 
 		const dayLog = ref([]);
 
-		onMounted(async () => {
-			getProfile();
-			dayLog.value = (await profile.value[dayKey]) || [];
-		});
+		dayLog.value = (profile.log[dayKey]) || [];
 
 		function updateDayLog() {
-			profile.value[dayKey] = dayLog.value;
-			if (!dayLog.value.length) delete profile.value[dayKey];
-			localStorage.setItem('exerciseLog', JSON.stringify(profile.value));
-			updateProfile(profile.value);
+			profile.log[dayKey] = dayLog.value;
+			if (!dayLog.value.length) delete profile.log[dayKey];
+			localStorage.setItem('exerciseLog', JSON.stringify(profile.log));
+			updateProfile(profile.log);
 		}
 
 		return {

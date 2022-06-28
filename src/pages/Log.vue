@@ -17,7 +17,7 @@
 						</td>
 					</template>
 
-					<td v-if="weeks.length > 1 && !hasPlus"></td>
+					<td v-if="weeks.length > 1 && !profile.plus"></td>
 				</tr>
 
 				<tr class="day-headings">
@@ -33,7 +33,7 @@
 						</td>
 					</template>
 
-					<td v-if="weeks.length > 1 && !hasPlus"></td>
+					<td v-if="weeks.length > 1 && !profile.plus"></td>
 				</tr>
 
 				<tr class="week-summaries">
@@ -45,7 +45,7 @@
 						</th>
 					</template>
 
-					<th v-if="weeks.length > 1 && !hasPlus">
+					<th v-if="weeks.length > 1 && !profile.plus">
 						<h4>Want to see more than 2 weeks?</h4>
 						<p class="message">
 							Support the development of Fithacker -
@@ -64,21 +64,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted } from 'vue';
 import { formatDate, createWeek } from '../helpers';
 import { userSession } from '../supabase';
-import useProfile from '../useProfile';
+import { useProfile } from '../useProfile';
 
 export default defineComponent({
 	setup() {
 		const { profile } = useProfile();
+
 		let date = new Date();
 		let weeks = [];
-		const firstDateInLog = new Date(Object.keys(profile.value).sort()[0]);
+		const firstDateInLog = new Date(Object.keys(profile.log).sort()[0]);
 		const firstDateToShow = firstDateInLog && new Date(firstDateInLog.setDate(firstDateInLog.getDate() - 7))
 
 		do {
-			const week = createWeek(date, profile.value);
+			const week = createWeek(date, profile.log);
 			if (week) weeks.push(week);
 			date = new Date(date.setDate(date.getDate() - 7));
 		} while (firstDateToShow && firstDateToShow < date)
@@ -88,15 +89,13 @@ export default defineComponent({
 
 		const nameDay = (date) => formatDate(new Date(date));
 
-		const hasPlus = profile.value?.plus;
-
-		if (!hasPlus) weeks = weeks.slice(0,2);
+		if (!profile.plus) weeks = weeks.slice(0, 2);
 
 		return {
-			hasPlus,
 			nameDay,
 			weeks,
 			userSession,
+			profile
 		};
 	},
 });

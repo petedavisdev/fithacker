@@ -55,11 +55,11 @@
 import { defineComponent, onMounted, ref } from 'vue';
 import { router } from '../router';
 import { createProfile, supabase, userSession } from '../supabase';
-import useProfile from '../useProfile';
+import { useProfile } from '../useProfile';
 
 export default defineComponent({
 	setup() {
-		const { profile, getProfile } = useProfile();
+		const { profile } = useProfile();
 		if (!userSession.value) router.push({ name: 'Login' })
 
 		supabase.auth.onAuthStateChange(async (event, session) => {
@@ -68,10 +68,6 @@ export default defineComponent({
 				useProfile
 			}
 		})
-
-		onMounted(async () => {
-			await getProfile();
-		});
 
 		return {
 			userSession,

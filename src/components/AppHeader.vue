@@ -14,7 +14,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { userSession } from '../supabase';
-import useProfile from '../useProfile';
+import { useProfile } from '../useProfile';
 
 export default defineComponent({
 	setup() {

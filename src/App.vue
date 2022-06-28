@@ -4,21 +4,25 @@
     <h1 v-else style="text-align: center">You are offline</h1>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script setup lang="ts">
+import { ref, watch } from "vue";
+import { useRoute } from "vue-router";
 import AppHeader from './components/AppHeader.vue';
+import { useProfile } from "./useProfile";
+// import { fetchProfile } from "./supabase";
 
-export default defineComponent({
-	components: {
-		AppHeader,
-	},
-    setup() {
-        const online = ref(true);
+// const profile = ref({ plus: false })
+const { profile, getProfile } = useProfile();
+const route = useRoute()
+const online = ref(navigator.onLine)
 
-        window.addEventListener('online', () => online.value = true);
-        window.addEventListener('offline', () => online.value = false);
+watch(() => route, () => getProfile())
+    
+window.addEventListener('offline', () => online.value = false);
+window.addEventListener('online', () => {
+    online.value = true
+    getProfile()
+});
 
-        return { online }
-    }
-})
+window.addEventListener('focus', () => getProfile());
 </script>
