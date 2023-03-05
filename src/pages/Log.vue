@@ -2,12 +2,9 @@
 import { createWeek } from '../helpers';
 import { userSession } from '../supabase';
 
-const localLog = localStorage.getItem('exerciseLog');
-const log = localLog ? JSON.parse(localLog) : {};
+const localLog = localStorage.getItem('exerciseLog') ?? '{}';
+const log = JSON.parse(localLog);
 const firstDateInLog = new Date(Object.keys(log).sort()[0]);
-const firstDateToShow =
-	firstDateInLog &&
-	new Date(firstDateInLog.setDate(firstDateInLog.getDate() - 7));
 
 let date = new Date();
 let weeks: ReturnType<typeof createWeek>[] = [];
@@ -16,8 +13,7 @@ do {
 	const week = createWeek(date, log);
 	if (week) weeks.push(week);
 	date = new Date(date.setDate(date.getDate() - 7));
-	console.log(firstDateToShow && firstDateToShow < date);
-} while (firstDateToShow && firstDateToShow < date);
+} while (firstDateInLog && firstDateInLog < date);
 
 weeks[0].title = 'This week';
 if (weeks[1]) weeks[1].title = 'Last week';
