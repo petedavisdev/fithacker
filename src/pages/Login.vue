@@ -2,7 +2,10 @@
 	<main>
 		<form v-if="!submitted" @submit.prevent="login">
 			<h1>Login</h1>
-			<p>Backup your exercise log and use Fithacker on multiple devices 😎</p>
+			<p>
+				Backup your exercise log and use Fithacker on multiple devices
+				😎
+			</p>
 			<p>
 				<label>
 					Email
@@ -13,8 +16,8 @@
 			<p>
 				<label>
 					<input type="checkbox" required />
-					As an alpha fithacker, I am happy to be asked for feedback and I can tolerate
-					the odd bug!
+					As an beta fithacker, I am happy to be asked for feedback
+					and I can tolerate the odd bug!
 				</label>
 			</p>
 
@@ -24,7 +27,9 @@
 		<article v-else>
 			<h2>Magic login link sent to {{ email }}</h2>
 			<p>Check your inbox and spam folder 🧐</p>
-			<button type="button" @click="submitted = false">← Try again</button>
+			<button type="button" @click="submitted = false">
+				← Try again
+			</button>
 		</article>
 	</main>
 </template>
@@ -36,24 +41,22 @@ import { createProfile, getLog, supabase, userSession } from '../supabase';
 
 export default defineComponent({
 	setup() {
-		if (userSession.value) router.push({name: 'Account'})
+		if (userSession.value) router.push({ name: 'Account' });
 
 		const email = ref('');
 		const submitted = ref(false);
 
 		async function login() {
 			try {
-				const { error } = await supabase.auth.signIn(
-					{ email: email.value },
-					{ redirectTo: 'https://fithacker.netlify.app/account' }
-				);
+				const { error } = await supabase.auth.signInWithOtp({
+					email: email.value,
+				});
 
 				if (error) return alert('Error logging in: ' + error.message);
 
 				submitted.value = true;
 			} catch (error) {
-				console.error('Error thrown:', error.message);
-				return alert(error.error_description || error);
+				return alert('Error logging in: ' + error);
 			}
 		}
 

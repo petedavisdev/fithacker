@@ -1,84 +1,76 @@
-import { createClient, Session } from "@supabase/supabase-js"
-import { ref } from "vue"
+import { Session, createClient } from '@supabase/supabase-js';
+
+import { ref } from 'vue';
 
 export const supabase = createClient(
-	import.meta.env.VITE_APP_SUPABASE_URL as string,
-	import.meta.env.VITE_APP_SUPABASE_KEY as string
-)
+	import.meta.env.VITE_APP_SUPABASE_URL ?? '',
+	import.meta.env.VITE_APP_SUPABASE_KEY ?? ''
+);
 
-export const userSession = ref<Session | null>(null)
+export const userSession = ref<Session | null>(null);
 
 export async function createProfile() {
-	if (!userSession.value) return null
+	if (!userSession.value) return null;
 
-	// Check if profile exists
-	// const { data: profiles, error } = await supabase
-	//   .from("profiles")
-	//   .select("exercise_log")
-	//   .eq("user_id", userSession.value.user.id)
-
-	// if (profiles[0]) return
-
-	const localExerciseLog = localStorage.getItem("exerciseLog")
+	const localExerciseLog = localStorage.getItem('exerciseLog') ?? '';
 
 	try {
-		const { data, error } = await supabase.from("profiles").insert([
+		const { error } = await supabase.from('profiles').insert([
 			{
 				user_id: userSession.value.user.id,
 				exercise_log: JSON.parse(localExerciseLog),
 			},
-		])
+		]);
 
 		if (error) {
-			console.warn("error", error)
-			return
+			console.warn('error', error);
+			return;
 		}
-	} catch (err) {
-		alert("Error")
-		console.error("Unknown problem inserting to db", err)
-		return null
+	} catch (error) {
+		console.error('Unknown problem inserting to db: ', error);
+		return null;
 	}
 }
 
-async function fetchProfile() {
+async function fetchProfile(): Promise<Record<string, string[]>> {
 	try {
-		if (!userSession.value) throw "not logged in"
+		if (!userSession.value) throw 'not logged in';
 
 		const { data: profiles, error } = await supabase
-			.from("profiles")
-			.select("exercise_log, plus")
-			.eq("user_id", userSession.value.user.id)
+			.from('profiles')
+			.select('exercise_log')
+			.eq('user_id', userSession.value.user.id);
 
-		if (error) throw error
+		if (error) throw error;
 
-		if (profiles === null) throw "no profiles fo user"
+		if (profiles === null) throw 'no profiles fo user';
 
-		if (!profiles[0].exercise_log) throw "no exercise_log on profile"
+		if (!profiles[0].exercise_log) throw 'no exercise_log on profile';
 
-		return profiles[0]
+		return profiles[0];
 	} catch (err) {
-		console.error("Error fetching data:", err)
-		return {}
+		console.error('Error fetching data:', err);
+		return {};
 	}
 }
 
 export async function getLog() {
-	const fetchedProfile = await fetchProfile()
-	const fetchedLog = fetchedProfile.exercise_log
-	const localLog = localStorage.getItem("exerciseLog")
-	const log = localLog ? JSON.parse(localLog) : {}
-	const mergedLog = { ...fetchedLog, ...log, plus: fetchedProfile.plus }
+	const fetchedProfile = await fetchProfile();
+	const fetchedLog = fetchedProfile.exercise_log;
+	const localLog = localStorage.getItem('exerciseLog');
+	const log = localLog ? JSON.parse(localLog) : {};
+	const mergedLog = { ...fetchedLog, ...log };
 
-	localStorage.setItem("exerciseLog", JSON.stringify(mergedLog))
+	localStorage.setItem('exerciseLog', JSON.stringify(mergedLog));
 
-	return mergedLog
+	return mergedLog;
 }
 
-export async function updateProfile(log) {
-	if (!userSession.value) return null
+export async function updateProfile(log: Record<string, string[]>) {
+	if (!userSession.value) return null;
 
 	const { data, error } = await supabase
-		.from("profiles")
+		.from('profiles')
 		.update({ exercise_log: log })
-		.eq("user_id", userSession.value.user.id)
+		.eq('user_id', userSession.value.user.id);
 }

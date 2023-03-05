@@ -1,85 +1,32 @@
+<script setup lang="ts">
+import { router } from '../router';
+import { createProfile, supabase, userSession } from '../supabase';
+
+if (!userSession.value) router.push({ name: 'Login' });
+
+supabase.auth.onAuthStateChange(async (event) => {
+	if (event == 'SIGNED_IN') {
+		createProfile();
+	}
+});
+</script>
+
 <template>
 	<main>
 		<Suspense>
-			<template #default>
-				<div>
-					<article v-if="userSession && !log.plus">
-						<h2>
-							You are logged in as {{ userSession.user.email }}
-						</h2>
-						<p>
-							Thank you for trying out Fithacker alpha!
-						</p>
-						<p>
-							If you would like to encourage me to take the app to the next level, you
-							can
-							<a href="https://www.buymeacoffee.com/petedavis"> buy me a coffee </a>
-							😉
-						</p>
+			<article v-if="userSession">
+				<h2>You are logged in as {{ userSession.user.email }}</h2>
+				<p>Thank you for trying out Fithacker beta!</p>
 
-						<p>Thank you!</p>
+				<p><i>Pete</i> 😃</p>
 
-						<p><i>Pete</i> 😃</p>
-
-						<router-link :to="{ name: 'Log' }" class="button">➙</router-link>
-					</article>
-
-					<article v-if="userSession && log.plus">
-						<h2>
-							You are logged in as {{ userSession.user.email }}
-						</h2>
-						<p>
-							Thank you for supporting Fithacker alpha! 
-						</p>
-						<p>
-							You have unlocked you complete log and you will be the first to get new features.
-						</p>
-
-						<p>Cheers!</p>
-
-						<p><i>Pete</i> 😃</p>
-
-						<router-link :to="{ name: 'Log' }" class="button">➙</router-link>
-					</article>
-				</div>
-			</template>
-
-			<template #fallback>
-				<article>Loading...</article>
-			</template>
+				<router-link :to="{ name: 'Log' }" class="button"
+					>➙</router-link
+				>
+			</article>
 		</Suspense>
 	</main>
 </template>
-
-<script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
-import { router } from '../router';
-import { createProfile, getLog, supabase, userSession } from '../supabase';
-
-export default defineComponent({
-	setup() {
-		if (!userSession.value) router.push({ name: 'Login' })
-
-		const log = ref({plus: false})
-
-		supabase.auth.onAuthStateChange(async (event, session) => {
-			if (event == 'SIGNED_IN') {
-				createProfile();
-				log.value = await getLog();
-			}
-		})
-
-		onMounted(async () => {
-			log.value = await getLog();
-		});
-
-		return {
-			userSession,
-			log
-		};
-	},
-});
-</script>
 
 <style scoped>
 .button {

@@ -1,22 +1,23 @@
 {
 	"name": "fithacker",
 	"license": "GNU GENERAL PUBLIC LICENSE Version 2",
+	"type": "module",
 	"scripts": {
 		"start": "netlify dev",
 		"dev": "vite",
-		"build": "vite build",
+		"build": "vue-tsc && vite build",
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@supabase/supabase-js": "^1.35.3",
-		"dayjs": "^1.11.3",
-		"vue": "^3.2.25",
-		"vue-router": "^4.0.15"
+		"@supabase/supabase-js": "^2.10.0",
+		"dayjs": "^1.11.7",
+		"vue": "^3.2.47",
+		"vue-router": "^4.1.6"
 	},
 	"devDependencies": {
-		"@vitejs/plugin-vue": "^2.3.3",
-		"typescript": "^4.5.4",
-		"vite": "^2.9.9",
-		"vue-tsc": "^0.34.7"
+		"@vitejs/plugin-vue": "^4.0.0",
+		"typescript": "^4.9.3",
+		"vite": "^4.1.0",
+		"vue-tsc": "^1.0.24"
 	}
 }
