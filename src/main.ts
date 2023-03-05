@@ -1,19 +1,20 @@
-import { createApp } from "vue"
-import App from "./App.vue"
-import "./modern-normalize.css"
-import "./styles.css"
-import { router } from "./router"
-import { supabase } from "./supabase"
-import { userSession } from "./supabase"
+import './modern-normalize.css';
+import './styles.css';
 
-if ("serviceWorker" in navigator) {
+import App from './App.vue';
+import { createApp } from 'vue';
+import { router } from './router';
+import { supabase } from './supabase';
+import { userSession } from './supabase';
+
+if ('serviceWorker' in navigator) {
 	navigator.serviceWorker
-		.register("service-worker.js")
-		.then(() => console.log("Registration Successful"))
+		.register('service-worker.js')
+		.then(() => console.log('Registration Successful'));
 }
 
-createApp(App).use(router).mount("#app")
+createApp(App).use(router).mount('#app');
 
-supabase.auth.onAuthStateChange((event, session) => {
-	userSession.value = session
-})
+supabase.auth.onAuthStateChange((_event, session) => {
+	userSession.value = session;
+});

@@ -1,3 +1,32 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { formatDate, shortenDate } from '../helpers';
+import { getLog, updateProfile } from '../supabase';
+import exercises from '../exercises.json';
+
+const route = useRoute();
+const isHome = route.path === '/';
+const routeDay = !isHome && route.params.date?.toString();
+const day = routeDay ? new Date(routeDay) : new Date();
+const dayKey = shortenDate(day);
+const dayName = formatDate(day);
+const log = ref({} as Record<string, string[]>);
+const dayLog = ref([] as string[]);
+
+onMounted(async () => {
+	log.value = await getLog();
+	dayLog.value = (await log.value[dayKey]) || [];
+});
+
+function updateDayLog() {
+	log.value[dayKey] = dayLog.value;
+	if (!dayLog.value.length) delete log.value[dayKey];
+	updateProfile(log.value);
+	localStorage.setItem('exerciseLog', JSON.stringify(log.value));
+}
+</script>
+
 <template>
 	<main>
 		<h1 :class="{ home: isHome }">
@@ -5,69 +34,22 @@
 		</h1>
 
 		<label v-for="(meta, code) in exercises" :key="code">
-			<input v-model="dayLog" type="checkbox" :value="code" @change="updateDayLog" />
+			<input
+				v-model="dayLog"
+				type="checkbox"
+				:value="code"
+				@change="updateDayLog"
+			/>
 
 			<span>
-				<code>{{ code }}</code>{{ meta.family }}
+				<code>{{ code }}</code
+				>{{ meta.family }}
 			</span>
 		</label>
 
 		<router-link :to="{ name: 'Log' }" class="button">➙</router-link>
 	</main>
 </template>
-
-<script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { formatDate, shortenDate } from '../helpers';
-import { getLog, updateProfile } from '../supabase';
-import exercises from '../exercises.json';
-
-interface Exercise {
-	family: string[];
-}
-
-export default defineComponent({
-	setup() {
-		const route = useRoute();
-
-		const isHome = route.path === '/';
-
-		const routeDay = !isHome && route.params.date?.toString();
-
-		const day = routeDay ? new Date(routeDay) : new Date();
-
-		const dayKey = shortenDate(day);
-
-		const dayName = formatDate(day);
-
-		const log = ref({});
-
-		const dayLog = ref([]);
-
-		onMounted(async () => {
-			log.value = await getLog();
-			dayLog.value = (await log.value[dayKey]) || [];
-		});
-
-		function updateDayLog() {
-			log.value[dayKey] = dayLog.value;
-			if (!dayLog.value.length) delete log.value[dayKey];
-			updateProfile(log.value);
-			localStorage.setItem('exerciseLog', JSON.stringify(log.value));
-		}
-
-		return {
-			dayLog,
-			dayName,
-			exercises,
-			isHome,
-			updateDayLog,
-			log,
-		};
-	},
-});
-</script>
 
 <style scoped>
 h1 {
