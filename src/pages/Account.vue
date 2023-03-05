@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import { router } from '../router';
-import { createProfile, supabase, userSession } from '../supabase';
+import { userSession } from '../supabase';
 
 if (!userSession.value) router.push({ name: 'Login' });
-
-supabase.auth.onAuthStateChange(async (event) => {
-	if (event == 'SIGNED_IN') {
-		createProfile();
-	}
-});
 </script>
 
 <template>

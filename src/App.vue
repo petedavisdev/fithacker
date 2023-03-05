@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { userSession } from './supabase';
+import { createProfile, getLog, supabase, userSession } from './supabase';
 
 const online = ref(true);
+const log = ref({} as Record<string, string[]>);
 
 window.addEventListener('online', () => (online.value = true));
 window.addEventListener('offline', () => (online.value = false));
+
+supabase.auth.onAuthStateChange(async (event) => {
+	if (event == 'SIGNED_IN') {
+		createProfile();
+		log.value = await getLog();
+	}
+});
 </script>
 
 <template>
