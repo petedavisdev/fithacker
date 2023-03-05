@@ -16,7 +16,7 @@ const dayLog = ref([] as string[]);
 
 onMounted(async () => {
 	log.value = await getLog();
-	dayLog.value = (await log.value[dayKey]) || [];
+	dayLog.value = (await log.value[dayKey]) ?? [];
 });
 
 function updateDayLog() {

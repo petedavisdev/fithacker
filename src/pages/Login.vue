@@ -1,10 +1,56 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { router } from '../router';
+import { supabase, userSession } from '../supabase';
+
+if (userSession.value) router.push({ name: 'Account' });
+
+const email = ref('');
+const token = ref('');
+const submitted = ref(false);
+
+async function login() {
+	try {
+		const { error } = await supabase.auth.signInWithOtp({
+			email: email.value,
+		});
+
+		if (error) return alert('Error logging in: ' + error.message);
+
+		submitted.value = true;
+	} catch (error) {
+		return alert('Error logging in: ' + error);
+	}
+}
+
+async function verify() {
+	try {
+		const response = await supabase.auth.verifyOtp({
+			email: email.value,
+			token: token.value,
+			type: 'magiclink',
+		});
+
+		if (response.error) throw response.error;
+
+		router.push({ name: 'Account' });
+	} catch (error: any) {
+		alert(error.error_description || error.message);
+	}
+}
+
+function retry() {
+	email.value = token.value = '';
+	submitted.value = false;
+}
+</script>
+
 <template>
 	<main>
 		<form v-if="!submitted" @submit.prevent="login">
 			<h1>Login</h1>
 			<p>
 				Backup your exercise log and use Fithacker on multiple devices
-				😎
 			</p>
 			<p>
 				<label>
@@ -13,65 +59,37 @@
 				</label>
 			</p>
 
-			<p>
-				<label>
-					<input type="checkbox" required />
-					As an beta fithacker, I am happy to be asked for feedback
-					and I can tolerate the odd bug!
-				</label>
-			</p>
-
-			<button type="submit">Send me a magic login link ✨</button>
+			<button type="submit">Send me a magic number ✨</button>
 		</form>
 
-		<article v-else>
-			<h2>Magic login link sent to {{ email }}</h2>
+		<form v-else @submit.prevent="verify">
+			<h2>Magic number sent to {{ email }}</h2>
 			<p>Check your inbox and spam folder 🧐</p>
-			<button type="button" @click="submitted = false">
-				← Try again
-			</button>
-		</article>
+			<p>
+				<input
+					v-model="token"
+					type="text"
+					id="token"
+					class="token"
+					inputmode="numeric"
+					pattern="[0-9]+"
+					min-length="6"
+					max-length="6"
+					title="6 digit number"
+					required
+				/>
+			</p>
+			<button type="submit">Enter &rarr;</button>
+			<p>
+				<button type="button" @click="retry">← Try again</button>
+			</p>
+		</form>
 	</main>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
-import { router } from '../router';
-import { createProfile, getLog, supabase, userSession } from '../supabase';
-
-export default defineComponent({
-	setup() {
-		if (userSession.value) router.push({ name: 'Account' });
-
-		const email = ref('');
-		const submitted = ref(false);
-
-		async function login() {
-			try {
-				const { error } = await supabase.auth.signInWithOtp({
-					email: email.value,
-				});
-
-				if (error) return alert('Error logging in: ' + error.message);
-
-				submitted.value = true;
-			} catch (error) {
-				return alert('Error logging in: ' + error);
-			}
-		}
-
-		return {
-			email,
-			login,
-			submitted,
-			userSession,
-		};
-	},
-});
-</script>
-
 <style scoped>
-[type='email'] {
+[type='email'],
+[type='text'] {
 	display: block;
 	width: 100%;
 	border-width: 2px;
