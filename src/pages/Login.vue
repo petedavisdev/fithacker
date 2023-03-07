@@ -25,20 +25,20 @@ async function login() {
 
 async function verify() {
 	try {
-		const logInResponse = await supabase.auth.verifyOtp({
+		const loginResponse = await supabase.auth.verifyOtp({
 			email: email.value,
 			token: token.value,
 			type: 'magiclink',
 		});
 
-		if (logInResponse.error) {
-			const signUpResponse = await supabase.auth.verifyOtp({
+		if (loginResponse.error) {
+			const signupResponse = await supabase.auth.verifyOtp({
 				email: email.value,
 				token: token.value,
 				type: 'signup',
 			});
 
-			if (signUpResponse.error) throw signUpResponse.error;
+			if (signupResponse.error) throw signupResponse.error;
 		}
 
 		router.push({ name: 'Account' });
