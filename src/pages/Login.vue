@@ -25,13 +25,21 @@ async function login() {
 
 async function verify() {
 	try {
-		const response = await supabase.auth.verifyOtp({
+		const logInResponse = await supabase.auth.verifyOtp({
 			email: email.value,
 			token: token.value,
 			type: 'magiclink',
 		});
 
-		if (response.error) throw response.error;
+		if (logInResponse.error) {
+			const signUpResponse = await supabase.auth.verifyOtp({
+				email: email.value,
+				token: token.value,
+				type: 'signup',
+			});
+
+			if (signUpResponse.error) throw signUpResponse.error;
+		}
 
 		router.push({ name: 'Account' });
 	} catch (error: any) {
