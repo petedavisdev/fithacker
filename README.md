@@ -17,6 +17,13 @@ Hello 👋 I'm Pete Davis. Fithacker is my little pet project that I'm making fo
 
 ## Development
 
+You will need a **.env.local** file containing the following:
+
+```
+VITE_APP_SUPABASE_URL=
+VITE_APP_SUPABASE_KEY=
+```
+
 ```bash
 npm i
 npm i netlify-cli -g
