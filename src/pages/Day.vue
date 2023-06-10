@@ -55,7 +55,7 @@ function updateDayLog() {
 
 <style scoped>
 h1 {
-	padding: 1rem 1rem 0.5rem;
+	padding: 1rem 0 0.5rem;
 	text-align: center;
 }
 
@@ -72,10 +72,10 @@ h1 {
 
 [type='checkbox'] {
 	height: 2rem;
-	width: 1.5rem;
+	width: 2rem;
 	position: absolute;
 	top: 0.5rem;
-	left: 0.5ch;
+	left: 0;
 }
 
 label {
@@ -97,6 +97,14 @@ code {
 
 em {
 	color: hotpink;
+	position: absolute;
+	top: 0.5rem;
+	left: 0;
+	pointer-events: none;
+}
+
+em:empty {
+	opacity: 0;
 }
 
 :checked ~ * {
