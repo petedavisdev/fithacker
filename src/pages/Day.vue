@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { formatDate, shortenDate } from '../helpers';
+import { daysSince, formatDate, shortenDate } from '../helpers';
 import { getLog, updateProfile } from '../supabase';
 import exercises from '../exercises.json';
 
@@ -45,6 +45,8 @@ function updateDayLog() {
 				<code>{{ code }}</code
 				>{{ meta.family }}
 			</span>
+
+			<em>{{ daysSince(log, dayKey, code) }}</em>
 		</label>
 
 		<router-link :to="{ name: 'Log' }" class="button">➙</router-link>
@@ -91,6 +93,10 @@ label * {
 code {
 	font-size: x-large;
 	vertical-align: middle;
+}
+
+em {
+	color: hotpink;
 }
 
 :checked ~ * {

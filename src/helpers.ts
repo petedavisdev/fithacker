@@ -93,3 +93,22 @@ function formatWeekTitle(monday: string, sunday: string) {
 		dayjs(sunday).format('D MMM')
 	);
 }
+
+export function daysSince(
+	log: Record<string, string[]>,
+	day: string,
+	activity: string
+) {
+	let since = 0;
+	const logArray = Object.entries(log);
+	const days = logArray
+		.filter(([_d, activities]) => activities.includes(activity))
+		.map(([d, _activities]) => d);
+	if (!days.includes(day)) {
+		days.push(day);
+		const indexOfDay = days.sort().indexOf(day);
+		const previousDay = indexOfDay > 0 ? days.at(indexOfDay - 1) : day;
+		since = dayjs(day).diff(previousDay, 'day');
+	}
+	return since || null;
+}
