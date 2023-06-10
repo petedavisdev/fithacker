@@ -96,19 +96,21 @@ function formatWeekTitle(monday: string, sunday: string) {
 
 export function daysSince(
 	log: Record<string, string[]>,
+	dayLog: string[],
 	day: string,
-	activity: string
+	code: string
 ) {
-	let since = 0;
+	if (dayLog.includes(code)) return;
+
 	const logArray = Object.entries(log);
 	const days = logArray
-		.filter(([_d, activities]) => activities.includes(activity))
+		.filter(([_d, activities]) => activities.includes(code))
 		.map(([d, _activities]) => d);
-	if (!days.includes(day)) {
-		days.push(day);
-		const indexOfDay = days.sort().indexOf(day);
-		const previousDay = indexOfDay > 0 ? days.at(indexOfDay - 1) : day;
-		since = dayjs(day).diff(previousDay, 'day');
-	}
-	return since || null;
+	const indexOfDay = [...days, day].sort().indexOf(day);
+
+	if (indexOfDay < 1) return;
+
+	const previousDay = days.at(indexOfDay - 1);
+
+	return dayjs(day).diff(previousDay, 'day');
 }

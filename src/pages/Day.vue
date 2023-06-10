@@ -46,7 +46,7 @@ function updateDayLog() {
 				>{{ meta.family }}
 			</span>
 
-			<em>{{ daysSince(log, dayKey, code) }}</em>
+			<em>{{ daysSince(log, dayLog, dayKey, code) }}</em>
 		</label>
 
 		<router-link :to="{ name: 'Log' }" class="button">➙</router-link>
