@@ -41,10 +41,8 @@ function updateDayLog() {
 				@change="updateDayLog"
 			/>
 
-			<span>
-				<code>{{ code }}</code
-				>{{ meta.family }}
-			</span>
+			<code>{{ code }}</code>
+			<span>{{ meta.family }}</span>
 
 			<em>{{ daysSince(log, dayLog, dayKey, code) }}</em>
 		</label>
@@ -59,55 +57,44 @@ h1 {
 	text-align: center;
 }
 
-[type='search'] {
-	padding: 1rem;
-	background-color: gainsboro;
-	width: 100%;
-	border-radius: 0;
-}
-
-[type='search']::placeholder {
-	font-size: x-large;
-}
-
-[type='checkbox'] {
-	height: 2rem;
-	width: 2rem;
-	position: absolute;
-	top: 0.5rem;
-	left: 0;
-}
-
 label {
-	position: relative;
-	display: block;
+	display: grid;
+	grid-template: 'box icon text' auto / auto auto 1fr;
+	gap: 0.25rem;
+	margin-block: 0.75rem;
+	align-items: center;
+}
+
+label span {
+	grid-area: text;
 	white-space: nowrap;
 	overflow-x: hidden;
 	text-overflow: ellipsis;
 }
 
-label * {
-	padding: 1ch 0.5ch 1ch 1rem;
+[type='checkbox'] {
+	grid-area: box;
+	height: 2rem;
+	width: 2rem;
 }
 
 code {
+	grid-area: icon;
 	font-size: x-large;
-	vertical-align: middle;
 }
 
 em {
-	color: hotpink;
-	position: absolute;
-	top: 0.5rem;
-	left: 0;
+	grid-area: box;
+	place-self: center;
+	color: var(--yellow);
 	pointer-events: none;
 }
 
 em:empty {
-	opacity: 0;
+	display: none;
 }
 
-:checked ~ * {
+label:has(:checked) {
 	background-color: var(--dark);
 }
 
