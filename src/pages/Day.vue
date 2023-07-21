@@ -41,8 +41,8 @@ function updateDayLog() {
 				@change="updateDayLog"
 			/>
 
-			<code>{{ code }}</code>
-			<span>{{ meta.family }}</span>
+			<code>{{ meta.icon }}</code>
+			<span>{{ meta.title }}</span>
 
 			<em>{{ daysSince(log, dayLog, dayKey, code) }}</em>
 		</label>

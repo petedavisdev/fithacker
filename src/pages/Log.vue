@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { createWeek } from '../helpers';
 import { userSession } from '../supabase';
+import exercises from '../exercises.json';
 
 const localLog = localStorage.getItem('exerciseLog') ?? '{}';
 const log = JSON.parse(localLog);
@@ -41,10 +42,14 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 									>+</span
 								>
 								<code
-									v-for="(exercise, index) in day.data"
+									v-for="(exercise, index) in day.data.sort()"
 									:key="index"
 									class="code"
-									>{{ exercise }}</code
+									>{{
+										exercises[
+											exercise as keyof typeof exercises
+										].icon
+									}}</code
 								>
 							</router-link>
 						</td>
@@ -61,7 +66,10 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 									name: 'Day',
 									params: { date: day.date },
 								}"
-								:class="day.future && 'future'"
+								:class="{
+									future: day.future,
+									weekend: index < 2,
+								}"
 								class="date"
 							>
 								{{ day.name }}
@@ -77,11 +85,10 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 						<th colspan="7" scope="colgroup" class="week">
 							<h2>{{ week.title }}</h2>
 							<p class="total">{{ week.total.length }}</p>
-							<p class="all">{{ week.total.sort().join(' ') }}</p>
 						</th>
 					</template>
 
-					<th v-if="weeks.length > 2 && !userSession">
+					<th v-if="weeks.length > 1 && !userSession">
 						<h4>Want to see more than 2 weeks?</h4>
 						<p class="message">
 							<template v-if="!userSession"
@@ -127,6 +134,10 @@ th {
 	display: block;
 	padding-top: 2ch;
 	color: var(--blue);
+}
+
+.weekend {
+	color: var(--yellow);
 }
 
 .future,

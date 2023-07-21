@@ -1,20 +1,26 @@
 {
-	"🚶": {
-		"family": "Walking"
+	"WALK": {
+		"title": "Walking",
+		"icon": "🚶"
 	},
-	"🏃‍♀️": {
-		"family": "Cardio"
+	"VIGO": {
+		"title": "Vigorous aerobic",
+		"icon": "🏃‍♀️"
 	},
-	"🤸‍♀️": {
-		"family": "Flexibility and balance"
+	"MOBI": {
+		"title": "Flexibility and balance",
+		"icon": "🤸"
 	},
-	"💪": {
-		"family": "Arm strengthening"
+	"LEGS": {
+		"title": "Leg strength",
+		"icon": "🦵"
 	},
-	"🌴": {
-		"family": "Core strengthening"
+	"CORE": {
+		"title": "Core strength",
+		"icon": "🌴"
 	},
-	"🦵": {
-		"family": "Leg strengthening"
+	"ARMS": {
+		"title": "Arm strength",
+		"icon": "💪"
 	}
 }
