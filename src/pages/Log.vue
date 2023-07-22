@@ -2,6 +2,11 @@
 import { createWeek } from '../helpers';
 import { userSession } from '../supabase';
 import exercises from '../exercises.json';
+import { reactive } from 'vue';
+
+const data = reactive({
+	view: 'chart' as 'chart' | 'streak',
+});
 
 const localLog = localStorage.getItem('exerciseLog') ?? '{}';
 const log = JSON.parse(localLog);
@@ -24,11 +29,39 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 
 <template>
 	<main>
+		<form>
+			<label>
+				<i>📊</i>
+				<input
+					type="radio"
+					v-model="data.view"
+					value="chart"
+					name="view"
+					id="chart-view"
+					checked
+				/>
+			</label>
+
+			<label>
+				<i>🗓️</i>
+				<input
+					type="radio"
+					v-model="data.view"
+					value="streak"
+					name="view"
+					id="streak-view"
+				/>
+			</label>
+		</form>
+
 		<div class="container">
 			<table>
 				<tr class="exercise-per-day">
-					<template v-for="(week, index) in weeks" :key="index">
-						<td v-for="(day, index) in week.log" :key="index">
+					<template
+						v-for="(week, weekIndex) in weeks"
+						:key="weekIndex"
+					>
+						<td v-for="(day, dayIndex) in week.log" :key="dayIndex">
 							<router-link
 								:to="{
 									name: 'Day',
@@ -36,20 +69,17 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 								}"
 								:class="day.future && 'future'"
 							>
-								<span
-									v-if="!day.data.length && !day.future"
-									class="count"
-									>+</span
-								>
 								<code
-									v-for="(exercise, index) in day.data.sort()"
-									:key="index"
-									class="code"
-									>{{
-										exercises[
-											exercise as keyof typeof exercises
-										].icon
-									}}</code
+									v-for="(exercise, key) in exercises"
+									:key="key"
+									:class="{
+										faded: !day.data.includes(key),
+										hidden:
+											(data.view === 'chart' &&
+												!day.data.includes(key)) ||
+											day.future,
+									}"
+									>{{ exercise.icon }}</code
 								>
 							</router-link>
 						</td>
@@ -59,8 +89,11 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 				</tr>
 
 				<tr class="day-headings">
-					<template v-for="(week, index) in weeks" :key="index">
-						<td v-for="(day, index) in week.log" :key="index">
+					<template
+						v-for="(week, weekIndex) in weeks"
+						:key="weekIndex"
+					>
+						<td v-for="(day, dayIndex) in week.log" :key="dayIndex">
 							<router-link
 								:to="{
 									name: 'Day',
@@ -68,7 +101,7 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 								}"
 								:class="{
 									future: day.future,
-									weekend: index < 2,
+									weekend: dayIndex < 2,
 								}"
 								class="date"
 							>
@@ -81,7 +114,10 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 				</tr>
 
 				<tr class="week-summaries">
-					<template v-for="(week, index) in weeks" :key="index">
+					<template
+						v-for="(week, weekIndex) in weeks"
+						:key="weekIndex"
+					>
 						<th colspan="7" scope="colgroup" class="week">
 							<h2>{{ week.title }}</h2>
 							<p class="total">{{ week.total.length }}</p>
@@ -130,6 +166,12 @@ th {
 	border-top: 2px solid var(--blue);
 }
 
+code {
+	display: block;
+	font-size: x-large;
+	margin-top: 0.25em;
+}
+
 .count {
 	display: block;
 	padding-top: 2ch;
@@ -140,16 +182,18 @@ th {
 	color: var(--yellow);
 }
 
+.faded {
+	opacity: 0.1;
+}
+
+.hidden {
+	display: none;
+}
+
 .future,
 .future * {
 	color: var(--dark);
 	pointer-events: none;
-}
-
-.code {
-	display: block;
-	font-size: x-large;
-	margin-top: 0.25em;
 }
 
 .container {
@@ -175,5 +219,38 @@ p {
 
 .message {
 	width: 35ch;
+}
+
+form {
+	direction: ltr;
+	display: grid;
+	grid-auto-flow: column;
+	place-content: center;
+	gap: 2px;
+	margin: 1rem;
+}
+
+label:has([type='radio']) {
+	display: grid;
+	grid-template: 'icon' auto / auto;
+	place-content: center;
+	padding: 0.6rem 1rem 0.4rem;
+	background-color: var(--dark);
+	border-bottom: 2px solid var(--dark);
+}
+
+label:has(:checked) {
+	border-color: var(--blue);
+}
+
+label [type='radio'] {
+	grid-area: icon;
+	opacity: 0;
+}
+
+label i {
+	grid-area: icon;
+	font-style: normal;
+	font-size: x-large;
 }
 </style>
