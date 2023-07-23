@@ -73,10 +73,14 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 									v-for="(exercise, key) in exercises"
 									:key="key"
 									:class="{
-										faded: !day.data.includes(key),
+										faded: !day.data
+											.map((item) => item[0])
+											.includes(key),
 										hidden:
 											(data.view === 'chart' &&
-												!day.data.includes(key)) ||
+												!day.data
+													.map((item) => item[0])
+													.includes(key)) ||
 											day.future,
 									}"
 									>{{ exercise.icon }}</code

@@ -1,25 +1,25 @@
 {
-	"WALK": {
+	"W": {
 		"title": "Walking",
 		"icon": "🚶"
 	},
-	"VIGO": {
+	"V": {
 		"title": "Vigorous aerobic",
 		"icon": "🏃‍♀️"
 	},
-	"MOBI": {
+	"M": {
 		"title": "Flexibility and balance",
 		"icon": "🤸"
 	},
-	"LEGS": {
+	"L": {
 		"title": "Leg strength",
 		"icon": "🦵"
 	},
-	"CORE": {
+	"C": {
 		"title": "Core strength",
 		"icon": "🌴"
 	},
-	"ARMS": {
+	"A": {
 		"title": "Arm strength",
 		"icon": "💪"
 	}

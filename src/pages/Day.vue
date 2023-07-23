@@ -11,12 +11,12 @@ const routeDay = !isHome && route.params.date?.toString();
 const day = routeDay ? new Date(routeDay) : new Date();
 const dayKey = shortenDate(day);
 const dayName = formatDate(day);
-const log = ref({} as Record<string, string[]>);
-const dayLog = ref([] as string[]);
+const log = ref<Record<string, string[]>>({});
+const dayLog = ref<string[]>([] as string[]);
 
 onMounted(async () => {
 	log.value = await getLog();
-	dayLog.value = (await log.value[dayKey]) ?? [];
+	dayLog.value = (await log.value[dayKey]).map((item) => item[0]) ?? [];
 });
 
 function updateDayLog() {
