@@ -7,7 +7,7 @@ import exercises from '../exercises.json';
 import { reactive } from 'vue';
 
 const data = reactive({
-	view: 'chart' as 'chart' | 'streak' | keyof typeof exercises,
+	facet: 'chart' as keyof typeof exercises | 'none',
 });
 
 const localLog = localStorage.getItem('exerciseLog') ?? '{}';
@@ -31,39 +31,6 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 
 <template>
 	<main>
-		<form>
-			<label>
-				<i>📊</i>
-				<input
-					type="radio"
-					v-model="data.view"
-					value="chart"
-					name="view"
-					checked
-				/>
-			</label>
-
-			<label>
-				<i>🗓️</i>
-				<input
-					type="radio"
-					v-model="data.view"
-					value="streak"
-					name="view"
-				/>
-			</label>
-
-			<label v-for="(exercise, key) in exercises" :key="key">
-				<i>{{ exercise.icon }}</i>
-				<input
-					type="radio"
-					v-model="data.view"
-					:value="key"
-					name="view"
-				/>
-			</label>
-		</form>
-
 		<div class="container">
 			<table>
 				<tr class="exercise-per-day">
@@ -87,13 +54,12 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 											.map((item) => item[0])
 											.includes(key),
 										hidden:
-											(data.view !== 'streak' &&
-												!day.data
-													.map((item) => item[0])
-													.includes(key)) ||
+											!day.data
+												.map((item) => item[0])
+												.includes(key) ||
 											day.future ||
-											(data.view.length === 1 &&
-												key !== data.view),
+											(data.facet.length === 1 &&
+												key !== data.facet),
 									}"
 									>{{ exercise.icon }}</code
 								>
@@ -136,7 +102,15 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 					>
 						<th colspan="7" scope="colgroup" class="week">
 							<h2>{{ week.title }}</h2>
-							<p class="total">{{ week.total.length }}</p>
+							<p class="total">
+								{{
+									week.total.filter(
+										(item) =>
+											data.facet.length > 1 ||
+											item[0] === data.facet
+									).length
+								}}
+							</p>
 						</th>
 					</template>
 
@@ -154,17 +128,43 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 			</table>
 		</div>
 	</main>
+	<footer>
+		<form>
+			<label>
+				<i>📊</i>
+				<input
+					type="radio"
+					v-model="data.facet"
+					:value="'none'"
+					name="facet"
+					checked
+				/>
+			</label>
+
+			<label v-for="(exercise, key) in exercises" :key="key">
+				<i>{{ exercise.icon }}</i>
+				<input
+					type="radio"
+					v-model="data.facet"
+					:value="key"
+					name="facet"
+				/>
+			</label>
+		</form>
+	</footer>
 </template>
 
 <style scoped>
 main {
 	direction: rtl;
 	padding-inline: 0;
+	align-content: end;
 }
 
 table {
 	text-align: center;
 	border-spacing: 1.2ch;
+	margin-bottom: 20dvh;
 }
 
 th,
@@ -214,8 +214,6 @@ code {
 
 .container {
 	overflow-x: auto;
-	overflow-y: auto;
-	max-height: calc(100dvh - 12rem);
 }
 
 p {
@@ -239,28 +237,29 @@ p {
 	width: 35ch;
 }
 
-form {
+footer {
 	position: fixed;
 	inset: auto 0 0;
-	direction: ltr;
+	background-color: var(--dark);
+}
+
+form {
 	display: grid;
 	grid-auto-flow: column;
 	place-content: center;
-	gap: 2px;
-	margin: 1rem;
+	gap: 0.5rem;
 }
 
 label:has([type='radio']) {
 	display: grid;
 	grid-template: 'icon' auto / auto;
 	place-content: center;
-	padding: 0.6rem 1rem 0.4rem;
+	padding: 0.5rem;
 	border-top: 2px solid transparent;
 }
 
 label:has(:checked) {
 	border-color: var(--blue);
-	background-color: var(--dark);
 }
 
 label [type='radio'] {

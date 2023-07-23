@@ -36,13 +36,13 @@ export function formatDate(date: Date): String {
 export function createWeek(currentDate: Date, log: Log) {
 	const endDate = dayjs(currentDate).endOf('isoWeek');
 	const dayNames = ['Sun', 'Sat', 'Fri', 'Thu', 'Wed', 'Tue', 'Mon'];
-	const total: Activity = [];
+	let total: Activity = [];
 
 	const weekLog = dayNames.map((name, index) => {
 		const date = dayjs(endDate).subtract(index, 'day').format('YYYY-MM-DD');
 		const future = dayjs().isBefore(dayjs(date));
 		const data = log[date] ?? [];
-		total.push(...data);
+		total = [...total, ...data];
 		return { name, date, future, data };
 	});
 
