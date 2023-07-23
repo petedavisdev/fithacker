@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Log } from '../types';
-import Journal from '../components/Journal.vue';
 import { createWeek } from '../helpers';
 import { userSession } from '../supabase';
 import exercises from '../exercises.json';
@@ -61,6 +60,15 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 											(data.facet.length === 1 &&
 												key !== data.facet),
 									}"
+									><span class="note">
+										{{
+											Object.fromEntries(
+												day.data.map((item) => [
+													item[0],
+													item[1],
+												])
+											)[data.facet]
+										}} </span
 									>{{ exercise.icon }}</code
 								>
 							</router-link>
@@ -186,6 +194,13 @@ code {
 	display: block;
 	font-size: x-large;
 	margin-top: 0.25em;
+}
+
+.note {
+	writing-mode: vertical-lr;
+	font-size: 1.25rem;
+	font-weight: normal;
+	transform: rotate(180deg);
 }
 
 .count {
