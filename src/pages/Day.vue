@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Activity, ExerciseCodes, Log } from '../types';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { daysSince, formatDate, shortenDate } from '../helpers';
@@ -11,17 +12,35 @@ const routeDay = !isHome && route.params.date?.toString();
 const day = routeDay ? new Date(routeDay) : new Date();
 const dayKey = shortenDate(day);
 const dayName = formatDate(day);
-const log = ref<Record<string, string[]>>({});
-const dayLog = ref<string[]>([] as string[]);
+const log = ref<Log>({});
+const dayLog = ref<Activity>([]);
+const dayCodes = ref<ExerciseCodes[]>([]);
+const dayNotes = ref<Partial<Record<ExerciseCodes, string>>>({});
 
 onMounted(async () => {
 	log.value = await getLog();
-	dayLog.value = (await log.value[dayKey]).map((item) => item[0]) ?? [];
+
+	dayLog.value = log.value[dayKey] ?? [];
+
+	dayCodes.value =
+		log.value[dayKey].map((item) => item[0] as ExerciseCodes) ?? [];
+
+	const notes = Object.fromEntries(
+		log.value[dayKey].map((item) => [item[0], item[1] ?? ''])
+	);
+
+	dayNotes.value = Object.fromEntries(
+		Object.keys(exercises).map((code) => [code, notes[code] ?? ''])
+	);
 });
 
 function updateDayLog() {
-	log.value[dayKey] = dayLog.value;
-	if (!dayLog.value.length) delete log.value[dayKey];
+	log.value[dayKey] = dayCodes.value.map((code) => {
+		const note = dayNotes.value[code];
+		return note ? [code, note] : code;
+	});
+	console.log(log.value[dayKey]);
+	if (!dayCodes.value.length) delete log.value[dayKey];
 	updateProfile(log.value);
 	localStorage.setItem('exerciseLog', JSON.stringify(log.value));
 }
@@ -35,7 +54,7 @@ function updateDayLog() {
 
 		<label v-for="(meta, code) in exercises" :key="code">
 			<input
-				v-model="dayLog"
+				v-model="dayCodes"
 				type="checkbox"
 				:value="code"
 				@change="updateDayLog"
@@ -45,6 +64,12 @@ function updateDayLog() {
 			<span>{{ meta.title }}</span>
 
 			<em>{{ daysSince(log, dayLog, dayKey, code) }}</em>
+			<input
+				v-model="dayNotes[code]"
+				@blur="updateDayLog"
+				class="note"
+				:placeholder="meta.title"
+			/>
 		</label>
 
 		<router-link :to="{ name: 'Log' }" class="button">➙</router-link>
@@ -72,6 +97,23 @@ label span {
 	text-overflow: ellipsis;
 }
 
+.note {
+	display: none;
+	grid-area: text;
+	height: 100%;
+	border: 1px solid var(--blue);
+}
+
+.note:focus,
+.note:hover {
+	border-color: var(--cyan);
+	outline: none;
+}
+
+:checked ~ .note {
+	display: block;
+}
+
 [type='checkbox'] {
 	grid-area: box;
 	height: 2rem;
@@ -90,12 +132,12 @@ em {
 	pointer-events: none;
 }
 
-em:empty {
-	display: none;
-}
-
 label:has(:checked) {
 	background-color: var(--dark);
+}
+
+label:has(:checked) em {
+	display: none;
 }
 
 aside {

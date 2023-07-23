@@ -1,15 +1,17 @@
 <script setup lang="ts">
+import type { Log } from '../types';
+import Journal from '../components/Journal.vue';
 import { createWeek } from '../helpers';
 import { userSession } from '../supabase';
 import exercises from '../exercises.json';
 import { reactive } from 'vue';
 
 const data = reactive({
-	view: 'chart' as 'chart' | 'streak',
+	view: 'chart' as 'chart' | 'streak' | keyof typeof exercises,
 });
 
 const localLog = localStorage.getItem('exerciseLog') ?? '{}';
-const log = JSON.parse(localLog);
+const log = JSON.parse(localLog) as Log;
 const firstDateInLog = new Date(Object.keys(log).sort()[0]);
 
 let date = new Date();
@@ -37,7 +39,6 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 					v-model="data.view"
 					value="chart"
 					name="view"
-					id="chart-view"
 					checked
 				/>
 			</label>
@@ -49,7 +50,16 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 					v-model="data.view"
 					value="streak"
 					name="view"
-					id="streak-view"
+				/>
+			</label>
+
+			<label v-for="(exercise, key) in exercises" :key="key">
+				<i>{{ exercise.icon }}</i>
+				<input
+					type="radio"
+					v-model="data.view"
+					:value="key"
+					name="view"
 				/>
 			</label>
 		</form>
@@ -77,11 +87,13 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 											.map((item) => item[0])
 											.includes(key),
 										hidden:
-											(data.view === 'chart' &&
+											(data.view !== 'streak' &&
 												!day.data
 													.map((item) => item[0])
 													.includes(key)) ||
-											day.future,
+											day.future ||
+											(data.view.length === 1 &&
+												key !== data.view),
 									}"
 									>{{ exercise.icon }}</code
 								>
@@ -202,6 +214,8 @@ code {
 
 .container {
 	overflow-x: auto;
+	overflow-y: auto;
+	max-height: calc(100dvh - 12rem);
 }
 
 p {
@@ -226,6 +240,8 @@ p {
 }
 
 form {
+	position: fixed;
+	inset: auto 0 0;
 	direction: ltr;
 	display: grid;
 	grid-auto-flow: column;
@@ -239,12 +255,12 @@ label:has([type='radio']) {
 	grid-template: 'icon' auto / auto;
 	place-content: center;
 	padding: 0.6rem 1rem 0.4rem;
-	background-color: var(--dark);
-	border-bottom: 2px solid var(--dark);
+	border-top: 2px solid transparent;
 }
 
 label:has(:checked) {
 	border-color: var(--blue);
+	background-color: var(--dark);
 }
 
 label [type='radio'] {

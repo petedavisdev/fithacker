@@ -1,5 +1,5 @@
 import { Session, createClient } from '@supabase/supabase-js';
-
+import { type Log } from './types';
 import { ref } from 'vue';
 
 export const supabase = createClient(
@@ -32,7 +32,7 @@ export async function createProfile() {
 	}
 }
 
-async function fetchProfile(): Promise<Record<string, string[]>> {
+async function fetchProfile(): Promise<Log> {
 	try {
 		if (!userSession.value) throw 'not logged in';
 
@@ -66,7 +66,7 @@ export async function getLog() {
 	return mergedLog;
 }
 
-export async function updateProfile(log: Record<string, string[]>) {
+export async function updateProfile(log: Log) {
 	if (!userSession.value) return null;
 
 	const { data, error } = await supabase
