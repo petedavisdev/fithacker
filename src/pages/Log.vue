@@ -10,7 +10,7 @@ const data = reactive({
 });
 
 const localLog = localStorage.getItem('exerciseLog') ?? '{}';
-const log = JSON.parse(localLog) as Log;
+const log: Log = JSON.parse(localLog);
 const firstDateInLog = new Date(Object.keys(log).sort()[0]);
 
 let date = new Date();
@@ -169,10 +169,14 @@ main {
 	align-content: end;
 }
 
+.container {
+	overflow-x: auto;
+	margin-bottom: 15dvh;
+}
+
 table {
 	text-align: center;
 	border-spacing: 1.2ch;
-	margin-bottom: 20dvh;
 }
 
 th,
@@ -201,6 +205,7 @@ code {
 	font-size: 1.25rem;
 	font-weight: normal;
 	transform: rotate(180deg);
+	margin-inline: 0.5rem;
 }
 
 .count {
@@ -225,10 +230,6 @@ code {
 .future * {
 	color: var(--dark);
 	pointer-events: none;
-}
-
-.container {
-	overflow-x: auto;
 }
 
 p {
@@ -269,7 +270,7 @@ label:has([type='radio']) {
 	display: grid;
 	grid-template: 'icon' auto / auto;
 	place-content: center;
-	padding: 0.5rem;
+	padding: 0.7rem 0.5rem;
 	border-top: 2px solid transparent;
 }
 

@@ -63,7 +63,7 @@ export async function getLog() {
 
 	localStorage.setItem('exerciseLog', JSON.stringify(mergedLog));
 
-	return mergedLog;
+	return mergedLog as Log;
 }
 
 export async function updateProfile(log: Log) {

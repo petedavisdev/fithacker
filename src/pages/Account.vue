@@ -14,7 +14,7 @@ if (!userSession.value) router.push({ name: 'Login' });
 
 				<p><i>Pete</i> 😃</p>
 
-				<router-link :to="{ name: 'Log' }" class="button"
+				<router-link :to="{ name: 'Home' }" class="button"
 					>➙</router-link
 				>
 			</article>

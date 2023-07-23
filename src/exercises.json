@@ -7,20 +7,20 @@
 		"title": "Vigorous aerobic",
 		"icon": "🏃‍♀️"
 	},
-	"M": {
+	"F": {
 		"title": "Flexibility and balance",
 		"icon": "🤸"
 	},
-	"L": {
-		"title": "Leg strength",
-		"icon": "🦵"
+	"A": {
+		"title": "Arm strength",
+		"icon": "💪"
 	},
 	"C": {
 		"title": "Core strength",
 		"icon": "🌴"
 	},
-	"A": {
-		"title": "Arm strength",
-		"icon": "💪"
+	"L": {
+		"title": "Leg strength",
+		"icon": "🦵"
 	}
 }

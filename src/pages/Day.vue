@@ -69,6 +69,7 @@ function updateDayLog() {
 				@blur="updateDayLog"
 				class="note"
 				:placeholder="meta.title"
+				maxlength="25"
 			/>
 		</label>
 
@@ -95,13 +96,18 @@ label span {
 	white-space: nowrap;
 	overflow-x: hidden;
 	text-overflow: ellipsis;
+	padding: 2px 1px;
+	border-bottom: 2px solid transparent;
 }
 
 .note {
 	display: none;
 	grid-area: text;
 	height: 100%;
-	border: 1px solid var(--blue);
+	color: var(--cyan);
+	padding: 2px 1px;
+	border-bottom: 2px solid var(--blue);
+	width: 26ch;
 }
 
 .note:focus,
@@ -130,10 +136,6 @@ em {
 	place-self: center;
 	color: var(--yellow);
 	pointer-events: none;
-}
-
-label:has(:checked) {
-	background-color: var(--dark);
 }
 
 label:has(:checked) em {

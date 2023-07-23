@@ -100,7 +100,7 @@ function retry() {
 [type='text'] {
 	display: block;
 	width: 100%;
-	border-width: 2px;
+	border: 2px solid var(--blue);
 	padding: 0.5em;
 }
 
