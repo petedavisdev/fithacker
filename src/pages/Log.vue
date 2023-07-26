@@ -6,7 +6,7 @@ import exercises from '../exercises.json';
 import { reactive } from 'vue';
 
 const data = reactive({
-	facet: 'chart' as keyof typeof exercises | 'none',
+	facet: 'all' as keyof typeof exercises | 'all',
 });
 
 const localLog = localStorage.getItem('exerciseLog') ?? '{}';
@@ -46,30 +46,28 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 								:class="day.future && 'future'"
 							>
 								<code
-									v-for="(exercise, key) in exercises"
-									:key="key"
-									:class="{
-										faded: !day.data
-											.map((item) => item[0])
-											.includes(key),
-										hidden:
-											!day.data
-												.map((item) => item[0])
-												.includes(key) ||
-											day.future ||
-											(data.facet.length === 1 &&
-												key !== data.facet),
-									}"
-									><span class="note">
-										{{
-											Object.fromEntries(
-												day.data.map((item) => [
-													item[0],
-													item[1],
-												])
-											)[data.facet]
-										}} </span
-									>{{ exercise.icon }}</code
+									v-for="(
+										exercise, exerciseIndex
+									) in day.data.filter(
+										(exercise) =>
+											data.facet === 'all' ||
+											exercise === data.facet ||
+											exercise[0] === data.facet
+									)"
+									:key="exerciseIndex"
+									><span
+										class="note"
+										v-if="
+											Array.isArray(exercise) &&
+											data.facet !== 'all'
+										"
+									>
+										{{ exercise[1] }} </span
+									>{{
+										Array.isArray(exercise)
+											? exercise[0]
+											: exercise
+									}}</code
 								>
 							</router-link>
 						</td>
@@ -143,18 +141,22 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 				<input
 					type="radio"
 					v-model="data.facet"
-					:value="'none'"
+					:value="'all'"
 					name="facet"
 					checked
 				/>
 			</label>
 
-			<label v-for="(exercise, key) in exercises" :key="key">
-				<i>{{ exercise.icon }}</i>
+			<label
+				v-for="(exerciseText, exerciseKey) in exercises"
+				:key="exerciseKey"
+				:title="exerciseText"
+			>
+				<i>{{ exerciseKey }}</i>
 				<input
 					type="radio"
 					v-model="data.facet"
-					:value="key"
+					:value="exerciseKey"
 					name="facet"
 				/>
 			</label>
@@ -218,14 +220,6 @@ code {
 	color: var(--yellow);
 }
 
-.faded {
-	opacity: 0.1;
-}
-
-.hidden {
-	display: none;
-}
-
 .future,
 .future * {
 	color: var(--dark);
@@ -272,6 +266,7 @@ label:has([type='radio']) {
 	place-content: center;
 	padding: 0.7rem 0.5rem;
 	border-top: 2px solid transparent;
+	cursor: pointer;
 }
 
 label:has(:checked) {
@@ -281,6 +276,7 @@ label:has(:checked) {
 label [type='radio'] {
 	grid-area: icon;
 	opacity: 0;
+	cursor: pointer;
 }
 
 label i {

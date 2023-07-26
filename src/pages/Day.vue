@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Activity, ExerciseCodes, Log } from '../types';
+import type { DayLog, ExerciseKeys, Log } from '../types';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { daysSince, formatDate, shortenDate } from '../helpers';
@@ -9,38 +9,47 @@ import exercises from '../exercises.json';
 const route = useRoute();
 const isHome = route.path === '/';
 const routeDay = !isHome && route.params.date?.toString();
-const day = routeDay ? new Date(routeDay) : new Date();
-const dayKey = shortenDate(day);
-const dayName = formatDate(day);
+const date = routeDay ? new Date(routeDay) : new Date();
+const day = shortenDate(date);
+const dayName = formatDate(date);
 const log = ref<Log>({});
-const dayLog = ref<Activity>([]);
-const dayCodes = ref<ExerciseCodes[]>([]);
-const dayNotes = ref<Partial<Record<ExerciseCodes, string>>>({});
+const dayLog = ref<DayLog>([]);
+const dayExercises = ref<ExerciseKeys[]>([]);
+const dayNotes = ref<Partial<Record<ExerciseKeys, string>>>({});
 
 onMounted(async () => {
 	log.value = await getLog();
 
-	dayLog.value = log.value[dayKey] ?? [];
+	dayLog.value = log.value[day] ?? [];
 
-	dayCodes.value =
-		log.value[dayKey].map((item) => item[0] as ExerciseCodes) ?? [];
+	dayExercises.value =
+		log.value[day].map((exercise) =>
+			Array.isArray(exercise) ? (exercise[0] as ExerciseKeys) : exercise
+		) ?? [];
 
 	const notes = Object.fromEntries(
-		log.value[dayKey].map((item) => [item[0], item[1] ?? ''])
+		log.value[day].map((exercise) =>
+			Array.isArray(exercise)
+				? [exercise[0], exercise[1]]
+				: [exercise, '']
+		)
 	);
 
 	dayNotes.value = Object.fromEntries(
-		Object.keys(exercises).map((code) => [code, notes[code] ?? ''])
+		Object.keys(exercises).map((exerciseKey) => [
+			exerciseKey,
+			notes[exerciseKey] ?? '',
+		])
 	);
 });
 
 function updateDayLog() {
-	log.value[dayKey] = dayCodes.value.map((code) => {
-		const note = dayNotes.value[code];
-		return note ? [code, note] : code;
+	log.value[day] = dayExercises.value.map((exerciseKey) => {
+		const note = dayNotes.value[exerciseKey];
+		return note ? [exerciseKey, note] : exerciseKey;
 	});
-	console.log(log.value[dayKey]);
-	if (!dayCodes.value.length) delete log.value[dayKey];
+
+	if (!dayExercises.value.length) delete log.value[day];
 	updateProfile(log.value);
 	localStorage.setItem('exerciseLog', JSON.stringify(log.value));
 }
@@ -52,23 +61,26 @@ function updateDayLog() {
 			{{ isHome ? 'What exercise have you done today?' : dayName }}
 		</h1>
 
-		<label v-for="(meta, code) in exercises" :key="code">
+		<label
+			v-for="(exerciseText, exerciseKey) in exercises"
+			:key="exerciseKey"
+		>
 			<input
-				v-model="dayCodes"
+				v-model="dayExercises"
 				type="checkbox"
-				:value="code"
+				:value="exerciseKey"
 				@change="updateDayLog"
 			/>
 
-			<code>{{ meta.icon }}</code>
-			<span>{{ meta.title }}</span>
+			<code>{{ exerciseKey }}</code>
+			<span>{{ exerciseText }}</span>
 
-			<em>{{ daysSince(log, dayLog, dayKey, code) }}</em>
+			<em>{{ daysSince(log, dayLog, day, exerciseKey) }}</em>
 			<input
-				v-model="dayNotes[code]"
+				v-model="dayNotes[exerciseKey]"
 				@blur="updateDayLog"
 				class="note"
-				:placeholder="meta.title"
+				:placeholder="exerciseText + '...'"
 				maxlength="25"
 			/>
 		</label>
@@ -110,10 +122,19 @@ label span {
 	width: 26ch;
 }
 
+.note::placeholder {
+	color: var(--blue);
+	opacity: 0.5;
+}
+
 .note:focus,
 .note:hover {
 	border-color: var(--cyan);
 	outline: none;
+}
+
+.note:focus::placeholder {
+	opacity: 0;
 }
 
 :checked ~ .note {

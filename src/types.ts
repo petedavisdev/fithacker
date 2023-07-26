@@ -1,7 +1,7 @@
 import exercises from './exercises.json';
 
-export type ExerciseCodes = keyof typeof exercises;
+export type ExerciseKeys = keyof typeof exercises;
 
-export type Activity = (ExerciseCodes | [ExerciseCodes, string])[];
+export type DayLog = (ExerciseKeys | [ExerciseKeys, string])[];
 
-export type Log = { [dayKey: string]: Activity };
+export type Log = { [dayKey: string]: DayLog };

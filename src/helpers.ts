@@ -1,4 +1,4 @@
-import type { Activity, ExerciseCodes, Log } from './types';
+import type { DayLog, ExerciseKeys, Log } from './types';
 
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
@@ -36,7 +36,7 @@ export function formatDate(date: Date): String {
 export function createWeek(currentDate: Date, log: Log) {
 	const endDate = dayjs(currentDate).endOf('isoWeek');
 	const dayNames = ['Sun', 'Sat', 'Fri', 'Thu', 'Wed', 'Tue', 'Mon'];
-	let total: Activity = [];
+	let total: DayLog = [];
 
 	const weekLog = dayNames.map((name, index) => {
 		const date = dayjs(endDate).subtract(index, 'day').format('YYYY-MM-DD');
@@ -98,18 +98,21 @@ function formatWeekTitle(monday: string, sunday: string) {
 
 export function daysSince(
 	log: Log,
-	dayLog: Activity,
+	dayLog: DayLog,
 	day: string,
-	code: ExerciseCodes
+	exerciseKey: ExerciseKeys
 ) {
-	if (dayLog.includes(code)) return;
-
 	const logArray = Object.entries(log);
 	const days = logArray
-		.filter(([_d, activities]) =>
-			activities.map((activity) => activity[0]).includes(code)
+		.filter(([_day, dayLog]) =>
+			dayLog
+				.map((exercise) =>
+					Array.isArray(exercise) ? exercise[0] : exercise
+				)
+				.includes(exerciseKey)
 		)
-		.map(([d, _activities]) => d);
+		.map(([day, _dayLog]) => day);
+
 	const indexOfDay = [...days, day].sort().indexOf(day);
 
 	if (indexOfDay < 1) return;

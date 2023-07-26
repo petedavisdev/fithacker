@@ -1,26 +1,8 @@
 {
-	"W": {
-		"title": "Walking",
-		"icon": "🚶"
-	},
-	"V": {
-		"title": "Vigorous aerobic",
-		"icon": "🏃‍♀️"
-	},
-	"F": {
-		"title": "Flexibility and balance",
-		"icon": "🤸"
-	},
-	"A": {
-		"title": "Arm strength",
-		"icon": "💪"
-	},
-	"C": {
-		"title": "Core strength",
-		"icon": "🌴"
-	},
-	"L": {
-		"title": "Leg strength",
-		"icon": "🦵"
-	}
+	"🚶": "Walking",
+	"🏃‍♀️": "Cardio",
+	"🤸": "Flexibility and balance",
+	"💪": "Arm strength",
+	"🌴": "Core strength",
+	"🦵": "Leg strength"
 }
