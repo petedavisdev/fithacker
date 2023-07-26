@@ -203,6 +203,7 @@ code {
 }
 
 .note {
+	display: block;
 	writing-mode: vertical-lr;
 	font-size: 1.25rem;
 	font-weight: normal;
