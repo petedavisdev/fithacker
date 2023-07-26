@@ -265,7 +265,7 @@ label:has([type='radio']) {
 	display: grid;
 	grid-template: 'icon' auto / auto;
 	place-content: center;
-	padding: 0.7rem 0.5rem;
+	padding: 0.75rem 0.5rem 1rem;
 	border-top: 2px solid transparent;
 	cursor: pointer;
 }
