@@ -1,20 +1,8 @@
 {
-	"🚶": {
-		"family": "Walking"
-	},
-	"🏃‍♀️": {
-		"family": "Cardio"
-	},
-	"🤸‍♀️": {
-		"family": "Flexibility and balance"
-	},
-	"💪": {
-		"family": "Arm strengthening"
-	},
-	"🌴": {
-		"family": "Core strengthening"
-	},
-	"🦵": {
-		"family": "Leg strengthening"
-	}
+	"🚶": "Walking",
+	"🏃‍♀️": "Cardio",
+	"🤸": "Flexibility and balance",
+	"💪": "Arm strength",
+	"🌴": "Core strength",
+	"🦵": "Leg strength"
 }

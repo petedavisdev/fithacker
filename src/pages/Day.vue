@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { DayLog, ExerciseKeys, Log } from '../types';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { daysSince, formatDate, shortenDate } from '../helpers';
@@ -8,20 +9,47 @@ import exercises from '../exercises.json';
 const route = useRoute();
 const isHome = route.path === '/';
 const routeDay = !isHome && route.params.date?.toString();
-const day = routeDay ? new Date(routeDay) : new Date();
-const dayKey = shortenDate(day);
-const dayName = formatDate(day);
-const log = ref({} as Record<string, string[]>);
-const dayLog = ref([] as string[]);
+const date = routeDay ? new Date(routeDay) : new Date();
+const day = shortenDate(date);
+const dayName = formatDate(date);
+const log = ref<Log>({});
+const dayLog = ref<DayLog>([]);
+const dayExercises = ref<ExerciseKeys[]>([]);
+const dayNotes = ref<Partial<Record<ExerciseKeys, string>>>({});
 
 onMounted(async () => {
 	log.value = await getLog();
-	dayLog.value = (await log.value[dayKey]) ?? [];
+
+	dayLog.value = log.value[day] ?? [];
+
+	dayExercises.value =
+		log.value[day].map((exercise) =>
+			Array.isArray(exercise) ? (exercise[0] as ExerciseKeys) : exercise
+		) ?? [];
+
+	const notes = Object.fromEntries(
+		log.value[day].map((exercise) =>
+			Array.isArray(exercise)
+				? [exercise[0], exercise[1]]
+				: [exercise, '']
+		)
+	);
+
+	dayNotes.value = Object.fromEntries(
+		Object.keys(exercises).map((exerciseKey) => [
+			exerciseKey,
+			notes[exerciseKey] ?? '',
+		])
+	);
 });
 
 function updateDayLog() {
-	log.value[dayKey] = dayLog.value;
-	if (!dayLog.value.length) delete log.value[dayKey];
+	log.value[day] = dayExercises.value.map((exerciseKey) => {
+		const note = dayNotes.value[exerciseKey];
+		return note ? [exerciseKey, note] : exerciseKey;
+	});
+
+	if (!dayExercises.value.length) delete log.value[day];
 	updateProfile(log.value);
 	localStorage.setItem('exerciseLog', JSON.stringify(log.value));
 }
@@ -33,18 +61,28 @@ function updateDayLog() {
 			{{ isHome ? 'What exercise have you done today?' : dayName }}
 		</h1>
 
-		<label v-for="(meta, code) in exercises" :key="code">
+		<label
+			v-for="(exerciseText, exerciseKey) in exercises"
+			:key="exerciseKey"
+		>
 			<input
-				v-model="dayLog"
+				v-model="dayExercises"
 				type="checkbox"
-				:value="code"
+				:value="exerciseKey"
 				@change="updateDayLog"
 			/>
 
-			<code>{{ code }}</code>
-			<span>{{ meta.family }}</span>
+			<code>{{ exerciseKey }}</code>
+			<span>{{ exerciseText }}</span>
 
-			<em>{{ daysSince(log, dayLog, dayKey, code) }}</em>
+			<em>{{ daysSince(log, dayLog, day, exerciseKey) }}</em>
+			<input
+				v-model="dayNotes[exerciseKey]"
+				@blur="updateDayLog"
+				class="note"
+				:placeholder="exerciseText + '...'"
+				maxlength="25"
+			/>
 		</label>
 
 		<router-link :to="{ name: 'Log' }" class="button">➙</router-link>
@@ -70,6 +108,37 @@ label span {
 	white-space: nowrap;
 	overflow-x: hidden;
 	text-overflow: ellipsis;
+	padding: 2px 1px;
+	border-bottom: 2px solid transparent;
+}
+
+.note {
+	display: none;
+	grid-area: text;
+	height: 100%;
+	color: var(--cyan);
+	padding: 2px 1px;
+	border-bottom: 2px solid var(--blue);
+	width: 26ch;
+}
+
+.note::placeholder {
+	color: var(--blue);
+	opacity: 0.5;
+}
+
+.note:focus,
+.note:hover {
+	border-color: var(--cyan);
+	outline: none;
+}
+
+.note:focus::placeholder {
+	opacity: 0;
+}
+
+:checked ~ .note {
+	display: block;
 }
 
 [type='checkbox'] {
@@ -90,12 +159,8 @@ em {
 	pointer-events: none;
 }
 
-em:empty {
+label:has(:checked) em {
 	display: none;
-}
-
-label:has(:checked) {
-	background-color: var(--dark);
 }
 
 aside {

@@ -3,7 +3,7 @@
 	--cyan: #7fdbca;
 	--blue: #82aaff;
 	--dark: #091944;
-	--darker: #010927;
+	--darker: #010427;
 }
 
 * {
@@ -28,7 +28,7 @@ main {
 	min-height: 100vh;
 	place-content: center;
 	place-self: center;
-	padding: 4em 1em 1em;
+	padding: 4em 1em;
 }
 
 h1 {
@@ -37,9 +37,9 @@ h1 {
 }
 
 input {
-	color: var(--dark);
 	border: 0;
 	border-radius: 0;
+	background-color: var(--darker);
 }
 
 a {
