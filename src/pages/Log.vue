@@ -209,6 +209,7 @@ code {
 	font-weight: normal;
 	transform: rotate(180deg);
 	margin-inline: 0.5rem;
+	white-space: nowrap;
 }
 
 .count {
@@ -265,7 +266,7 @@ label:has([type='radio']) {
 	display: grid;
 	grid-template: 'icon' auto / auto;
 	place-content: center;
-	padding: 0.75rem 0.5rem 1rem;
+	padding: 1rem 0.5rem 1.5rem;
 	border-top: 2px solid transparent;
 	cursor: pointer;
 }
