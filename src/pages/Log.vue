@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Log } from '../types';
+import type { DayLog, Log } from '../types';
 import { createWeek } from '../helpers';
 import { userSession } from '../supabase';
 import exercises from '../exercises.json';
@@ -15,6 +15,15 @@ const firstDateInLog = new Date(Object.keys(log).sort()[0]);
 
 let date = new Date();
 let weeks: ReturnType<typeof createWeek>[] = [];
+
+function applyFacet(exerciseData: DayLog) {
+	return exerciseData.filter(
+		(exercise) =>
+			data.facet === 'all' ||
+			exercise === data.facet ||
+			exercise[0] === data.facet
+	);
+}
 
 do {
 	const week = createWeek(date, log);
@@ -48,12 +57,7 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 								<code
 									v-for="(
 										exercise, exerciseIndex
-									) in day.data.filter(
-										(exercise) =>
-											data.facet === 'all' ||
-											exercise === data.facet ||
-											exercise[0] === data.facet
-									)"
+									) in applyFacet(day.data)"
 									:key="exerciseIndex"
 									><span
 										class="note"
@@ -109,13 +113,7 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 						<th colspan="7" scope="colgroup" class="week">
 							<h2>{{ week.title }}</h2>
 							<p class="total">
-								{{
-									week.total.filter(
-										(item) =>
-											data.facet.length > 1 ||
-											item[0] === data.facet
-									).length
-								}}
+								{{ applyFacet(week.total).length }}
 							</p>
 						</th>
 					</template>
@@ -134,6 +132,7 @@ if (!userSession.value) weeks = weeks.slice(0, 2);
 			</table>
 		</div>
 	</main>
+
 	<footer>
 		<form>
 			<label>
@@ -266,7 +265,7 @@ label:has([type='radio']) {
 	display: grid;
 	grid-template: 'icon' auto / auto;
 	place-content: center;
-	padding: 1rem 0.5rem 1.5rem;
+	padding: 1rem 0.5rem 1.75rem;
 	border-top: 2px solid transparent;
 	cursor: pointer;
 }
