@@ -34,6 +34,7 @@ main {
 h1 {
 	font-size: 1.5em;
 	color: var(--yellow);
+	text-wrap: balance;
 }
 
 input {
