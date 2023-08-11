@@ -7,9 +7,11 @@ if (userSession.value) router.push({ name: 'Account' });
 
 const email = ref('');
 const token = ref('');
-const submitted = ref(false);
+const submitted = ref<Boolean | 'loading'>(false);
 
 async function login() {
+	submitted.value = 'loading';
+
 	try {
 		const { error } = await supabase.auth.signInWithOtp({
 			email: email.value,
@@ -19,6 +21,8 @@ async function login() {
 
 		submitted.value = true;
 	} catch (error) {
+		submitted.value = false;
+
 		return alert('Error logging in: ' + error);
 	}
 }
@@ -67,7 +71,13 @@ function retry() {
 				</label>
 			</p>
 
-			<button type="submit">Send me a magic number ✨</button>
+			<button type="submit" :disabled="submitted === 'loading'">
+				{{
+					!submitted
+						? 'Send me a magic number ✨'
+						: 'Sending magic number ...'
+				}}
+			</button>
 		</form>
 
 		<form v-else @submit.prevent="verify">
