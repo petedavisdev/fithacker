@@ -2,7 +2,7 @@
 
 The _object_ is to do an _array_ of exercises every week!
 
-[fithacker.netlify.app](https://fithacker.netlify.app)
+[fithacker.app](https://fithacker.app)
 
 ### About
 
