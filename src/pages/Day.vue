@@ -23,16 +23,16 @@ onMounted(async () => {
 	dayLog.value = log.value[day] ?? [];
 
 	dayExercises.value =
-		log.value[day].map((exercise) =>
+		log.value[day]?.map((exercise) =>
 			Array.isArray(exercise) ? (exercise[0] as ExerciseKeys) : exercise
 		) ?? [];
 
 	const notes = Object.fromEntries(
-		log.value[day].map((exercise) =>
+		log.value[day]?.map((exercise) =>
 			Array.isArray(exercise)
 				? [exercise[0], exercise[1]]
 				: [exercise, '']
-		)
+		) ?? []
 	);
 
 	dayNotes.value = Object.fromEntries(

@@ -1,3 +1,32 @@
+@font-face {
+	font-family: 'Ubuntu Mono';
+	src: url('/fonts/UbuntuMono-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Ubuntu Mono';
+	src: url('/fonts/UbuntuMono-Bold.ttf') format('truetype');
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: 'Ubuntu Mono';
+	src: url('/fonts/UbuntuMono-Italic.ttf') format('truetype');
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Ubuntu Mono';
+	src: url('/fonts/UbuntuMono-BoldItalic.ttf') format('truetype');
+	font-weight: bold;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Noto Color Emoji';
+	src: url('/fonts/NotoColorEmoji-Regular.ttf') format('truetype');
+}
+
 :root {
 	--yellow: #ffeb95;
 	--cyan: #7fdbca;
@@ -14,7 +43,7 @@
 body {
 	background-color: var(--darker);
 	color: var(--blue);
-	font-family: 'Ubuntu Mono', monospace;
+	font-family: 'Ubuntu Mono', monospace, 'Noto Color Emoji';
 	color-scheme: dark;
 }
 
@@ -49,8 +78,7 @@ a {
 }
 
 code {
-	font-family: 'Ubuntu Mono', monospace;
-	font-weight: bold;
+	font-family: 'Ubuntu Mono', monospace, 'Noto Color Emoji';
 	display: inline-block;
 	margin-inline: 0.25ch;
 }
