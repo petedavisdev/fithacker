@@ -3,7 +3,6 @@
 	"license": "GNU GENERAL PUBLIC LICENSE Version 2",
 	"type": "module",
 	"scripts": {
-		"start": "netlify dev",
 		"dev": "vite",
 		"build": "vue-tsc && vite build",
 		"preview": "vite preview"

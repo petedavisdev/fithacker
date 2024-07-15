@@ -1,18 +1,21 @@
 @font-face {
 	font-family: 'Ubuntu Mono';
 	src: url('/fonts/UbuntuMono-Regular.ttf') format('truetype');
+	font-display: fallback;
 }
 
 @font-face {
 	font-family: 'Ubuntu Mono';
 	src: url('/fonts/UbuntuMono-Bold.ttf') format('truetype');
 	font-weight: bold;
+	font-display: fallback;
 }
 
 @font-face {
 	font-family: 'Ubuntu Mono';
 	src: url('/fonts/UbuntuMono-Italic.ttf') format('truetype');
 	font-style: italic;
+	font-display: fallback;
 }
 
 @font-face {
@@ -20,19 +23,21 @@
 	src: url('/fonts/UbuntuMono-BoldItalic.ttf') format('truetype');
 	font-weight: bold;
 	font-style: italic;
+	font-display: fallback;
 }
 
 @font-face {
 	font-family: 'Noto Color Emoji';
 	src: url('/fonts/NotoColorEmoji-Regular.ttf') format('truetype');
+	font-display: fallback;
 }
 
 :root {
-	--yellow: #ffeb95;
-	--cyan: #7fdbca;
-	--blue: #82aaff;
-	--dark: #091944;
-	--darker: #010427;
+	--yellow: #ffee99;
+	--cyan: #77ddcc;
+	--blue: #99bbff;
+	--dark: #000444;
+	--darker: #000011;
 }
 
 * {

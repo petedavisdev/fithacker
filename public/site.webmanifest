@@ -1,7 +1,7 @@
 {
 	"name": "Fithacker",
-	"theme_color": "#010427",
-	"background_color": "#010427",
+	"theme_color": "#000011",
+	"background_color": "#000011",
 	"display": "standalone",
 	"scope": "/",
 	"start_url": "/",
