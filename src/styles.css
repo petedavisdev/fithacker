@@ -26,12 +26,6 @@
 	font-display: fallback;
 }
 
-@font-face {
-	font-family: 'Noto Color Emoji';
-	src: url('/fonts/NotoColorEmoji-Regular.ttf') format('truetype');
-	font-display: fallback;
-}
-
 :root {
 	--yellow: #ffee99;
 	--cyan: #77ddcc;
@@ -48,7 +42,7 @@
 body {
 	background-color: var(--darker);
 	color: var(--blue);
-	font-family: 'Ubuntu Mono', monospace, 'Noto Color Emoji';
+	font-family: 'Ubuntu Mono', monospace;
 	color-scheme: dark;
 }
 
@@ -83,7 +77,7 @@ a {
 }
 
 code {
-	font-family: 'Ubuntu Mono', monospace, 'Noto Color Emoji';
+	font-family: 'Ubuntu Mono', monospace;
 	display: inline-block;
 	margin-inline: 0.25ch;
 }
